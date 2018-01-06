@@ -28,16 +28,13 @@ int		my_key_funct(int keycode, t_test *test)
 			while (repeat < 500)
 			{
 				int x = 0;
-				while (x < 500)
-				{
-					int y = 0;
-					while (y < 500)
-					{	
-						mlx_pixel_put(test->mlx, test->win, repeat, y, 0x0087CEFA);
-						y++;
-					}
-					mlx_pixel_put(test->mlx, test->win, x, repeat, 0x0087CEFA);
+				int y = 0;
+				while (y < 500 && x < 500)
+				{	
+					mlx_pixel_put(test->mlx, test->win, repeat, y, 0x0087CEFA);
+					mlx_pixel_put(test->mlx, test->win, x, repeat, 0x009370DB);
 					x++;
+					y++;
 				}
 				repeat = repeat + 20;
 			}
