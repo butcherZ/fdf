@@ -1,6 +1,7 @@
 #include "../minilibx/mlx.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct s_test
 {
@@ -23,6 +24,13 @@ void	init_image(t_test *test)
 			test->addr = mlx_get_data_addr(test->img, &test->bits_per_pixel, &test->size_line, &test->endian);
 			printf("111\n");
 			printf("addr is %s\n", test->addr);
+			printf("Bit per pixel is %d, size line is %d, endiam is %d\n", test->bits_per_pixel, test->size_line, test->endian);
+			int byte_color = test->size_line / 500;
+			printf("Octet is %d", byte_color);
+		 	// int position = (test->size_line * 1) + (1 * octet);
+			int color = 0xFFFFFF;
+			for (int i = 0; i < (500 * 500) * byte_color; i += byte_color)
+				memcpy(test->addr + i, &color, byte_color); 	
 
 }
 
@@ -57,8 +65,9 @@ int		my_key_funct(int keycode, t_test *test)
 		if (keycode == 19)
 		{
 			init_image(test);
-			mlx_clear_window(test->mlx, test->win);
-			mlx_string_put(test->mlx, test->win, 100, 100, 0x00FFFFFF, "hello, asshole");
+			mlx_put_image_to_window(test->mlx, test->win, test->img, 0, 0);
+		//	mlx_clear_window(test->mlx, test->win);
+		//	mlx_string_put(test->mlx, test->win, 100, 100, 0x00FFFFFF, "hello, asshole");
 		}
 		if (keycode == 18)
 		{
