@@ -7,31 +7,44 @@
 void	draw_image(t_mlx *mlx, int x, int y, int color)
 {
 	int	 byte_per_pixel;
-	int		i;	
+	int		i;
 	int	 	count_h;
 	int		count_w;
-	
+
 	i = 0;
 	byte_per_pixel = mlx->img.bits_per_pixel / 8;
 	mlx->img.img_ptr = mlx_new_image(mlx->mlx, x, y);
 	mlx->img.addr = (int*)mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bits_per_pixel, &mlx->img.size_line, &mlx->img.endian);/*init imgae*/
 
 	printf("byte_per_pixel is %d, bits_per_pixel is %d, size_line is %d\n", byte_per_pixel, mlx->img.bits_per_pixel, mlx->img.size_line);
-	
-	count_h = -1;
+
+	count_h = 0;
 	while (count_h < WIN_HEIGHT)
 	{
-		count_w = -1;
-		if (count_h / mlx->img.size_line)
-			mlx->img.addr[count_h * WIN_WIDTH + count_w] = 0x009370DB;
+		count_w = 0;
 		while (count_w < WIN_WIDTH)
 		{
-			if (count_w % (mlx->img.size_line))
+			if (count_w % (mlx->img.size_line) != 0)
 				mlx->img.addr[count_h * WIN_WIDTH + count_w] = 0x00FFFFFF;
 					count_w += 50;
 		}
+		count_h++;
+	}
+
+	count_h = 50;
+	while (count_h < WIN_HEIGHT)
+	{
+		count_w = 0;
+		while (count_w < WIN_WIDTH)
+		{
+			if (count_w % (mlx->img.size_line) != 0)
+				mlx->img.addr[count_h * WIN_WIDTH + count_w] = 0x0000FFFF;
+					count_w++;
+		}
 		count_h += 50;
 	}
+
+
 	/*while (i < x * y * byte_per_pixel)
 	  {
 	  int j = 0;
@@ -53,7 +66,7 @@ void	draw_map(int repeat, int screen_size, t_mlx *map)
 		map->x = 50;
 		map->y = 50;
 		while (map->x < screen_size)
-		{	
+		{
 			mlx_pixel_put(map->mlx, map->win, repeat, map->y, 0x0087CEFA);
 			mlx_pixel_put(map->mlx, map->win, map->x, repeat, 0x009370DB);
 			map->x++;
@@ -76,14 +89,14 @@ int		my_key_funct(int keycode, t_mlx *map)
 	if (keycode == 19)
 	{
 		draw_image(map, WIN_WIDTH, WIN_HEIGHT, 0x0087CEFA);
-		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
+		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 50, 50);
 		//	mlx_clear_window(test->mlx, test->win);
 		//	mlx_string_put(test->mlx, test->win, 100, 100, 0x00FFFFFF, "hello, asshole");
 	}
 	if (keycode == 18)
 	{
 		draw_map(50, 550, map);
-	}	
+	}
 	return (0);
 }
 
