@@ -1,101 +1,99 @@
 #include "../minilibx/mlx.h"
+#include "fdf.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct s_test
+void	draw_image(t_mlx *mlx, int x, int y, int color)
 {
-	void 	*mlx;
-	void 	*win;
-	void	*img;
-	char	*addr;
-	int 	bits_per_pixel;
-	int 	size_line;
-	int 	endian;
-	int		x;
-	int		y;
+	int	 byte_per_pixel;
+	int		i;	
+	int	 	count_h;
+	int		count_w;
+	
+	i = 0;
+	byte_per_pixel = mlx->img.bits_per_pixel / 8;
+	mlx->img.img_ptr = mlx_new_image(mlx->mlx, x, y);
+	mlx->img.addr = (int*)mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bits_per_pixel, &mlx->img.size_line, &mlx->img.endian);/*init imgae*/
 
-} 			t_test;
-
-void	init_image(t_test *test)
-{
-			test->img = mlx_new_image(test->mlx, 500, 500);
-			printf("1\n");
-			test->addr = mlx_get_data_addr(test->img, &test->bits_per_pixel, &test->size_line, &test->endian);
-			printf("111\n");
-			printf("addr is %s\n", test->addr);
-			printf("Bit per pixel is %d, size line is %d, endiam is %d\n", test->bits_per_pixel, test->size_line, test->endian);
-			int byte_color = test->size_line / 500;
-			printf("Octet is %d", byte_color);
-		 	// int position = (test->size_line * 1) + (1 * octet);
-			int color = 0xFFFFFF;
-			for (int i = 0; i < (500 * 500) * byte_color; i += byte_color)
-				memcpy(test->addr + i, &color, byte_color); 	
-
+	printf("byte_per_pixel is %d, bits_per_pixel is %d, size_line is %d\n", byte_per_pixel, mlx->img.bits_per_pixel, mlx->img.size_line);
+	
+	count_h = -1;
+	while (count_h < WIN_HEIGHT)
+	{
+		count_w = -1;
+		if (count_h / mlx->img.size_line)
+			mlx->img.addr[count_h * WIN_WIDTH + count_w] = 0x009370DB;
+		while (count_w < WIN_WIDTH)
+		{
+			if (count_w % (mlx->img.size_line))
+				mlx->img.addr[count_h * WIN_WIDTH + count_w] = 0x00FFFFFF;
+					count_w += 50;
+		}
+		count_h += 50;
+	}
+	/*while (i < x * y * byte_per_pixel)
+	  {
+	  int j = 0;
+	  while (j < x * byte_per_pixel)
+	  {
+	  memcpy(mlx->img.addr + j, &color, byte_per_pixel);
+	  j = j + byte_per_pixel; //print horizontal line
+	  }
+	  memcpy(mlx->img.addr + i, &color, byte_per_pixel);
+	  i = i + mlx->img.size_line; //print vertical line
+	  }*/
 }
 
-void	draw_map(int repeat, int screen_size, t_test *test)
+void	draw_map(int repeat, int screen_size, t_mlx *map)
 {
-		mlx_clear_window(test->mlx, test->win);
-		while (repeat <= screen_size)
-		{
-			test->x = 50;
-			test->y = 50;
-			while (test->x < screen_size)
-			{	
-				mlx_pixel_put(test->mlx, test->win, repeat, test->y, 0x0087CEFA);
-				mlx_pixel_put(test->mlx, test->win, test->x, repeat, 0x009370DB);
-				test->x++;
-				test->y++;
-			}
-			repeat = repeat + 50;
+	mlx_clear_window(map->mlx, map->win);
+	while (repeat <= screen_size)
+	{
+		map->x = 50;
+		map->y = 50;
+		while (map->x < screen_size)
+		{	
+			mlx_pixel_put(map->mlx, map->win, repeat, map->y, 0x0087CEFA);
+			mlx_pixel_put(map->mlx, map->win, map->x, repeat, 0x009370DB);
+			map->x++;
+			map->y++;
 		}
+		repeat = repeat + 50;
+	}
 
 }
-int		my_key_funct(int keycode, t_test *test)
+int		my_key_funct(int keycode, t_mlx *map)
 {
 
-		printf("key event %d\n", keycode);
-		if (keycode == 53)
-		{
-			printf("you are pressing ESC\n");
-			mlx_destroy_window (test->mlx, test->win);
-			exit(1);
-		}
-		if (keycode == 19)
-		{
-			init_image(test);
-			mlx_put_image_to_window(test->mlx, test->win, test->img, 0, 0);
+	printf("key event %d\n", keycode);
+	if (keycode == 53)
+	{
+		printf("you are pressing ESC\n");
+		mlx_destroy_window (map->mlx, map->win);
+		exit(1);
+	}
+	if (keycode == 19)
+	{
+		draw_image(map, WIN_WIDTH, WIN_HEIGHT, 0x0087CEFA);
+		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
 		//	mlx_clear_window(test->mlx, test->win);
 		//	mlx_string_put(test->mlx, test->win, 100, 100, 0x00FFFFFF, "hello, asshole");
-		}
-		if (keycode == 18)
-		{
-			draw_map(50, 550, test);
-		}	
-			return (0);
+	}
+	if (keycode == 18)
+	{
+		draw_map(50, 550, map);
+	}	
+	return (0);
 }
 
 
 int main()
 {
-	t_test test;
-//	int		x;
-//	int		y;
+	t_mlx map;
 
-	test.mlx = mlx_init();
-	test.win = mlx_new_window(test.mlx, 700, 700, "is this shit working?");
-//	y = 50;
-/*	while (y < 200)
-	{
-		x = 50;
-		while (x < 200)
-		{
-			mlx_pixel_put(test.mlx, test.win, x, y, 0x00FFD700);
-			x++;
-		}
-		y++;
-	}*/
-	mlx_key_hook(test.win, my_key_funct, &test);
-	mlx_loop(test.mlx);
+	map.mlx = mlx_init();
+	map.win = mlx_new_window(map.mlx, 700, 700, "is this shit working?");
+	mlx_key_hook(map.win, my_key_funct, &map);
+	mlx_loop(map.mlx);
 }
