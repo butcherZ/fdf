@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void	draw_image(t_mlx *mlx, int x, int y, int color)
+void	img_put_pixel(t_mlx *mlx, int x, int y, int color)
 {
 	int	 byte_per_pixel;
 	int		i;
@@ -13,49 +13,45 @@ void	draw_image(t_mlx *mlx, int x, int y, int color)
 
 	i = 0;
 	byte_per_pixel = mlx->img.bits_per_pixel / 8;
-	mlx->img.img_ptr = mlx_new_image(mlx->mlx, x, y);
+	mlx->img.img_ptr = mlx_new_image(mlx->mlx, WIN_WIDTH, WIN_HEIGHT);
 	mlx->img.addr = (int*)mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bits_per_pixel, &mlx->img.size_line, &mlx->img.endian);/*init imgae*/
+printf("init image\n");
+//	printf("byte_per_pixel is %d, bits_per_pixel is %d, size_line is %d\n", byte_per_pixel, mlx->img.bits_per_pixel, mlx->img.size_line);
 
-	printf("byte_per_pixel is %d, bits_per_pixel is %d, size_line is %d\n", byte_per_pixel, mlx->img.bits_per_pixel, mlx->img.size_line);
+	mlx->img.addr[y * WIN_WIDTH + x] = color;
+	printf("%d\n", y*WIN_WIDTH + x);
+}
 
-	count_h = 0;
-	while (count_h < WIN_HEIGHT)
+int drawline(t_mlx *mlx, int x0, int y0, int x1, int  y1, int color)
+{
+	int dx, dy, p, x, y;
+
+	dx = x1 - x0;
+	dy = y1 - y0;
+
+	x = x0;
+	y = y0;
+
+	p = 2 * (dy - dx);
+	while(x < x1)
 	{
-		count_w = 0;
-		while (count_w < WIN_WIDTH)
-		{
-			if (count_w % (mlx->img.size_line) != 0)
-				mlx->img.addr[count_h * WIN_WIDTH + count_w] = 0x00FFFFFF;
-					count_w += 50;
+		if ( p >= 0)
+		{	
+//			img_put_pixel(mlx->mlx, x, y, color);
+			printf("aaa\n");
+			y++;
+			p = p + 2 * dy - 2 * dx;
 		}
-		count_h++;
-	}
-
-	count_h = 50;
-	while (count_h < WIN_HEIGHT)
-	{
-		count_w = 0;
-		while (count_w < WIN_WIDTH)
+		else
 		{
-			if (count_w % (mlx->img.size_line) != 0)
-				mlx->img.addr[count_h * WIN_WIDTH + count_w] = 0x0000FFFF;
-					count_w++;
+//			img_put_pixel(mlx->mlx, x , y, color);
+			p = p + 2 * dy;
 		}
-		count_h += 50;
+		x++;
+		printf("x is %d\n, x1 is %d\n", x, x1);
+		printf("4\n");
 	}
-
-
-	/*while (i < x * y * byte_per_pixel)
-	  {
-	  int j = 0;
-	  while (j < x * byte_per_pixel)
-	  {
-	  memcpy(mlx->img.addr + j, &color, byte_per_pixel);
-	  j = j + byte_per_pixel; //print horizontal line
-	  }
-	  memcpy(mlx->img.addr + i, &color, byte_per_pixel);
-	  i = i + mlx->img.size_line; //print vertical line
-	  }*/
+	return (0);
 }
 
 void	draw_map(int repeat, int screen_size, t_mlx *map)
@@ -88,8 +84,9 @@ int		my_key_funct(int keycode, t_mlx *map)
 	}
 	if (keycode == 19)
 	{
-		draw_image(map, WIN_WIDTH, WIN_HEIGHT, 0x0087CEFA);
-		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 50, 50);
+		drawline(map->mlx, 0, 0, 20, 20, 0x0087CEFA);
+		//img_put_pixel(map, 0, 0, 0x0087CEFA);
+		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
 		//	mlx_clear_window(test->mlx, test->win);
 		//	mlx_string_put(test->mlx, test->win, 100, 100, 0x00FFFFFF, "hello, asshole");
 	}

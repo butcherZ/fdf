@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 17:50:33 by zyuan             #+#    #+#             */
-/*   Updated: 2018/01/08 18:52:50 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/01/09 19:43:03 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ typedef struct s_img
 	int			endian;
 }				t_img;
 
+typedef struct s_coord
+{
+	int			x0;
+	int			y0;
+	int			x1;
+	int			y1;
+}				t_coord;
+
 typedef struct s_mlx
 {
 	void		*mlx;
@@ -35,5 +43,6 @@ typedef struct s_mlx
 	int			x;
 	int			y;
 	t_img		img;
+	t_coord		coord;
 }				t_mlx;
 #endif
