@@ -38,7 +38,7 @@ int drawline(t_mlx *mlx, int x0, int y0, int x1, int  y1, int color)
 		}
 		else
 		{
-			img_put_pixel(mlx,  x , y, color);
+			img_put_pixel(mlx, x , y, color);
 			p = p + 2 * dy;
 		}
 		x++;
@@ -46,6 +46,22 @@ int drawline(t_mlx *mlx, int x0, int y0, int x1, int  y1, int color)
 	return (0);
 }
 
+void	draw_image(t_mlx *mlx, int gap, int x0, int y0, int x1, int y1, int color)
+{
+		while (y0 <= WIN_HEIGHT)
+		{
+				drawline(mlx, x0, y0, x1, y1, color);
+				y0 = y0 + gap;
+				y1 = y1 + gap;
+		}
+/*		while (x0 <= WIN_WIDTH)
+		{
+			drawline(mlx, x0, y0, x1, y1, color);
+			x0 = x0 + gap;
+			x1 = x1 + gap;
+			printf("x0 is %d\nx1 is %d\ny0 is%d\ny1 is %d\n", x0, x1, y0, y1);
+		}*/
+}
 void	draw_map(int repeat, int screen_size, t_mlx *map)
 {
 	mlx_clear_window(map->mlx, map->win);
@@ -76,8 +92,12 @@ int		my_key_funct(int keycode, t_mlx *map)
 	}
 	if (keycode == 19)
 	{
+		mlx_clear_window(map->mlx, map->win);
 		init_image(map);
-		drawline(map, 2, 3, 500, 100, 0x0087CEFA);
+		drawline(map, 2,20, 500, 20, 0x0087CEFA);
+		drawline(map, 20, 100, 20, 200, 0x0087CEFA);
+		//draw_image(map, 50, 100, 20, 500, 20, 0x0087CEFA);
+		//draw_image(map, 50, 20, 100, 20, 500, 0x0087CEFA);
 		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
 	}
 	if (keycode == 18)
