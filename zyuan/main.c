@@ -4,22 +4,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+void	init_image(t_mlx *mlx)
+{
+		int		byte_per_pixel;
+		
+		byte_per_pixel = mlx->img.bits_per_pixel / 8;
+		mlx->img.img_ptr = mlx_new_image(mlx->mlx, WIN_WIDTH, WIN_HEIGHT);
+		mlx->img.addr = (int*)mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bits_per_pixel, &mlx->img.size_line, &mlx->img.endian);
+}
 void	img_put_pixel(t_mlx *mlx, int x, int y, int color)
 {
-	int	 byte_per_pixel;
-	int		i;
-	int	 	count_h;
-	int		count_w;
-
-	i = 0;
-	byte_per_pixel = mlx->img.bits_per_pixel / 8;
-	mlx->img.img_ptr = mlx_new_image(mlx->mlx, WIN_WIDTH, WIN_HEIGHT);
-	mlx->img.addr = (int*)mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bits_per_pixel, &mlx->img.size_line, &mlx->img.endian);/*init imgae*/
-printf("init image\n");
-//	printf("byte_per_pixel is %d, bits_per_pixel is %d, size_line is %d\n", byte_per_pixel, mlx->img.bits_per_pixel, mlx->img.size_line);
-
-	mlx->img.addr[y * WIN_WIDTH + x] = color;
-	printf("%d\n", y*WIN_WIDTH + x);
+		mlx->img.addr[y * WIN_WIDTH + x] = color;
 }
 
 int drawline(t_mlx *mlx, int x0, int y0, int x1, int  y1, int color)
@@ -37,19 +32,16 @@ int drawline(t_mlx *mlx, int x0, int y0, int x1, int  y1, int color)
 	{
 		if ( p >= 0)
 		{	
-//			img_put_pixel(mlx->mlx, x, y, color);
-			printf("aaa\n");
+			img_put_pixel(mlx, x, y, color);
 			y++;
 			p = p + 2 * dy - 2 * dx;
 		}
 		else
 		{
-//			img_put_pixel(mlx->mlx, x , y, color);
+			img_put_pixel(mlx,  x , y, color);
 			p = p + 2 * dy;
 		}
 		x++;
-		printf("x is %d\n, x1 is %d\n", x, x1);
-		printf("4\n");
 	}
 	return (0);
 }
@@ -84,11 +76,9 @@ int		my_key_funct(int keycode, t_mlx *map)
 	}
 	if (keycode == 19)
 	{
-		drawline(map->mlx, 0, 0, 20, 20, 0x0087CEFA);
-		//img_put_pixel(map, 0, 0, 0x0087CEFA);
+		init_image(map);
+		drawline(map, 2, 3, 500, 100, 0x0087CEFA);
 		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
-		//	mlx_clear_window(test->mlx, test->win);
-		//	mlx_string_put(test->mlx, test->win, 100, 100, 0x00FFFFFF, "hello, asshole");
 	}
 	if (keycode == 18)
 	{
