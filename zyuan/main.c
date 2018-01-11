@@ -28,6 +28,14 @@ int drawline(t_mlx *mlx, int x0, int y0, int x1, int  y1, int color)
 	y = y0;
 
 	p = 2 * (dy - dx);
+	if (x0 == x1)
+	{
+		while (y0 < y1)
+		{
+			img_put_pixel(mlx, x0, y0, color);
+			y0++;
+		}
+	}
 	while(x < x1)
 	{
 		if ( p >= 0)
@@ -48,19 +56,28 @@ int drawline(t_mlx *mlx, int x0, int y0, int x1, int  y1, int color)
 
 void	draw_image(t_mlx *mlx, int gap, int x0, int y0, int x1, int y1, int color)
 {
-		while (y0 <= WIN_HEIGHT)
+/*		while (y0 <= WIN_HEIGHT)
 		{
 				drawline(mlx, x0, y0, x1, y1, color);
 				y0 = y0 + gap;
 				y1 = y1 + gap;
-		}
-/*		while (x0 <= WIN_WIDTH)
+		}*/
+		int i = 0;
+		int x;
+		int y;
+
+		while (x0 < WIN_WIDTH)
 		{
 			drawline(mlx, x0, y0, x1, y1, color);
+	//		if (x0 < y0)
+	//		{	
+				drawline(mlx, y0, x0, y1, x1, color);
+	//		}
+	printf("======  %d  =====\nx0 is %d\ny0 is %d\nx1 is %d\ny1 is %d\n=====",i, x0, y0, x1, y1);
 			x0 = x0 + gap;
 			x1 = x1 + gap;
-			printf("x0 is %d\nx1 is %d\ny0 is%d\ny1 is %d\n", x0, x1, y0, y1);
-		}*/
+			i++;
+		}
 }
 void	draw_map(int repeat, int screen_size, t_mlx *map)
 {
@@ -94,10 +111,10 @@ int		my_key_funct(int keycode, t_mlx *map)
 	{
 		mlx_clear_window(map->mlx, map->win);
 		init_image(map);
-		drawline(map, 2,20, 500, 20, 0x0087CEFA);
-		drawline(map, 20, 100, 20, 200, 0x0087CEFA);
-		//draw_image(map, 50, 100, 20, 500, 20, 0x0087CEFA);
-		//draw_image(map, 50, 20, 100, 20, 500, 0x0087CEFA);
+//		drawline(map, 100, 20, 200, 20, 0x0087CEFA);
+//		drawline(map, 20, 100, 20, 200, 0x0087CEFA);
+	//	draw_image(map, 50, 100, 20, 500, 20, 0x0087CEFA);
+		draw_image(map, 50, 20, 100, 20, 500, 0x0087CEFA);
 		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
 	}
 	if (keycode == 18)
