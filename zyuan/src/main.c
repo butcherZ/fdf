@@ -7,15 +7,15 @@
 
 void	init_image(t_mlx *mlx)
 {
-		int		byte_per_pixel;
-		
-		byte_per_pixel = mlx->img.bits_per_pixel / 8;
-		mlx->img.img_ptr = mlx_new_image(mlx->mlx, WIN_WIDTH, WIN_HEIGHT);
-		mlx->img.addr = (int*)mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bits_per_pixel, &mlx->img.size_line, &mlx->img.endian);
+	int		byte_per_pixel;
+
+	byte_per_pixel = mlx->img.bits_per_pixel / 8;
+	mlx->img.img_ptr = mlx_new_image(mlx->mlx, WIN_WIDTH, WIN_HEIGHT);
+	mlx->img.addr = (int*)mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bits_per_pixel, &mlx->img.size_line, &mlx->img.endian);
 }
 void	img_put_pixel(t_mlx *mlx, int x, int y, int color)
 {
-		mlx->img.addr[y * WIN_WIDTH + x] = color;
+	mlx->img.addr[y * WIN_WIDTH + x] = color;
 }
 
 int drawline(t_mlx *mlx, int x0, int y0, int x1, int  y1, int color)
@@ -57,26 +57,26 @@ int drawline(t_mlx *mlx, int x0, int y0, int x1, int  y1, int color)
 
 void	draw_image(t_mlx *mlx, int gap, int x0, int y0, int x1, int y1, int color)
 {
-/*		while (y0 <= WIN_HEIGHT)
-		{
-				drawline(mlx, x0, y0, x1, y1, color);
-				y0 = y0 + gap;
-				y1 = y1 + gap;
-		}*/
-		int i = 0;
-
-		while (x0 < WIN_WIDTH)
-		{
+	/*		while (y0 <= WIN_HEIGHT)
+			{
 			drawline(mlx, x0, y0, x1, y1, color);
-	//		if (x0 < y0)
-	//		{	
-				drawline(mlx, y0, x0, y1, x1, color);
-	//		}
-	printf("======  %d  =====\nx0 is %d\ny0 is %d\nx1 is %d\ny1 is %d\n=====",i, x0, y0, x1, y1);
-			x0 = x0 + gap;
-			x1 = x1 + gap;
-			i++;
-		}
+			y0 = y0 + gap;
+			y1 = y1 + gap;
+			}*/
+	int i = 0;
+
+	while (x0 < WIN_WIDTH)
+	{
+		drawline(mlx, x0, y0, x1, y1, color);
+		//		if (x0 < y0)
+		//		{	
+		drawline(mlx, y0, x0, y1, x1, color);
+		//		}
+		printf("======  %d  =====\nx0 is %d\ny0 is %d\nx1 is %d\ny1 is %d\n=====",i, x0, y0, x1, y1);
+		x0 = x0 + gap;
+		x1 = x1 + gap;
+		i++;
+	}
 }
 void	draw_map(int repeat, int screen_size, t_mlx *map)
 {
@@ -110,9 +110,9 @@ int		my_key_funct(int keycode, t_mlx *map)
 	{
 		mlx_clear_window(map->mlx, map->win);
 		init_image(map);
-//		drawline(map, 100, 20, 200, 20, 0x0087CEFA);
-//		drawline(map, 20, 100, 20, 200, 0x0087CEFA);
-	//	draw_image(map, 50, 100, 20, 500, 20, 0x0087CEFA);
+		//		drawline(map, 100, 20, 200, 20, 0x0087CEFA);
+		//		drawline(map, 20, 100, 20, 200, 0x0087CEFA);
+		//	draw_image(map, 50, 100, 20, 500, 20, 0x0087CEFA);
 		draw_image(map, 50, 20, 100, 20, 500, 0x0087CEFA);
 		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
 	}
@@ -127,9 +127,27 @@ int		my_key_funct(int keycode, t_mlx *map)
 int main(int argc, char *argv[])
 {
 	t_mlx map;
+	int fd;
+	char *line;
 
+	fd = 0;
+	ft_putchar('a');
+	if (argc != 2)
+	{
+		write(1, "error\n", 6);
+		return (-1);
+	}
+	if (argc == 2)
+		fd = open(argv[1], O_RDONLY);
+	while (get_next_line(fd, &line) == 1)
+	{
+		printf("===========line is %s=============\n", line);
+		free(line);
+	}
+	close(fd);
 	map.mlx = mlx_init();
 	map.win = mlx_new_window(map.mlx, 700, 700, "is this shit working?");
 	mlx_key_hook(map.win, my_key_funct, &map);
 	mlx_loop(map.mlx);
+	return (0);
 }

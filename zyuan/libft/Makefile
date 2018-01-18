@@ -6,7 +6,7 @@
 #    By: zyuan <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/10 12:24:54 by zyuan             #+#    #+#              #
-#    Updated: 2018/01/17 20:06:24 by zyuan            ###   ########.fr        #
+#    Updated: 2018/01/18 16:07:26 by zyuan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,7 @@ SRC = ft_putchar.c \
 	  ft_lstdel.c \
 	  ft_lstiter.c \
 	  ft_lstmap.c \
-	  get_next_line.c
+	  get_next_line.c \
 
 INCLUDES = -I.
 

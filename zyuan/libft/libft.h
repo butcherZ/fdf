@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 02:54:06 by zyuan             #+#    #+#             */
-/*   Updated: 2018/01/17 20:08:35 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/01/18 16:11:28 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <fcntl.h>
+# include <limits.h>
 
 typedef struct		s_list
 {
