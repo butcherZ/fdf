@@ -77,6 +77,7 @@ char		**ft_strsplit(char const *s, char c)
 		ft_get_word(s, c, &start, &end);
 		if (!(word = ft_strsub(s, start, end - start)))
 			return (NULL);
+		word[end - start] = '\0';
 		str[i] = word;
 		i++;
 	}

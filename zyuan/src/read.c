@@ -2,16 +2,18 @@
 #include "../libft/libft.h"
 #include <stdio.h>
 
+
 char		**my_get_line(int fd, char **line)
 {
 	//		int 	**array;
 	char	**str;
 	while (get_next_line(fd, line) == 1)
 	{
-		printf("%s\n", *line);
-//		str = ft_strsplit(*line, ' ');
-//		free(str);
-	}	
+		//printf("%s\n", *line);
+		str = ft_strsplit(*line, ' ');
+		printf("%s\n", str[0]);
+		//free(str);
+	}
 
 	return (str);
 }
@@ -49,7 +51,7 @@ int main(int argc, char *argv[])
 /*		print_tab(*/my_get_line(fd, &line)/*)*/;
 //		printf("%s\n", my_get_line(fd, &line)[0]);
 	free(line);
-	
+
 	close(fd);
 	return (0);
 }

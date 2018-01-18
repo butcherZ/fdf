@@ -4,10 +4,27 @@
 #include <stdlib.h>
 #include <string.h>
 
+// x is j
+// y is i
+// map_shit[i][j]
+int map_shit[11][19] = {
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 10, 10, 0, 0, 10, 10, 0, 0, 0, 10, 10, 10, 10, 10, 0, 0, 0},
+	{0, 0, 10, 10, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 0},
+	{0, 0, 10, 10, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 0},
+	{0, 0, 10, 10, 10, 10, 10, 10, 0, 0, 0, 0, 10, 10, 10, 10, 0, 0, 0},
+	{0, 0, 0, 10, 10, 10, 10, 10, 0, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 10, 10, 0, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 10, 10, 0, 0, 0, 10, 10, 10, 10, 10, 10, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+};
+
 void	init_image(t_mlx *mlx)
 {
 		int		byte_per_pixel;
-		
+
 		byte_per_pixel = mlx->img.bits_per_pixel / 8;
 		mlx->img.img_ptr = mlx_new_image(mlx->mlx, WIN_WIDTH, WIN_HEIGHT);
 		mlx->img.addr = (int*)mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bits_per_pixel, &mlx->img.size_line, &mlx->img.endian);
@@ -39,7 +56,7 @@ int drawline(t_mlx *mlx, int x0, int y0, int x1, int  y1, int color)
 	while(x < x1)
 	{
 		if ( p >= 0)
-		{	
+		{
 			img_put_pixel(mlx, x, y, color);
 			y++;
 			p = p + 2 * dy - 2 * dx;
@@ -70,7 +87,7 @@ void	draw_image(t_mlx *mlx, int gap, int x0, int y0, int x1, int y1, int color)
 		{
 			drawline(mlx, x0, y0, x1, y1, color);
 	//		if (x0 < y0)
-	//		{	
+	//		{
 				drawline(mlx, y0, x0, y1, x1, color);
 	//		}
 	printf("======  %d  =====\nx0 is %d\ny0 is %d\nx1 is %d\ny1 is %d\n=====",i, x0, y0, x1, y1);
@@ -121,13 +138,19 @@ int		my_key_funct(int keycode, t_mlx *map)
 	{
 		draw_map(50, 550, map);
 	}
+	if (keycode == 20)
+	{
+		put_pixel_point()
+	}
 	return (0);
 }
 
 
 int main()
 {
+
 	t_mlx map;
+
 
 	map.mlx = mlx_init();
 	map.win = mlx_new_window(map.mlx, 700, 700, "is this shit working?");
