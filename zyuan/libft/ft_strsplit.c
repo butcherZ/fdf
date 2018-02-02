@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 20:01:01 by zyuan             #+#    #+#             */
-/*   Updated: 2017/11/22 15:03:29 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/02/02 15:38:53 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ static void	ft_get_word(const char *s, char c, int *start, int *end)
 		if (s[i] != c)
 		{
 			*start = i;
-			while (s[i] != c)
+			while (s[i] != c && s[i] != '\0')
+			{
 				i++;
+			}
 			num_words++;
 			*end = i;
 			return ;
