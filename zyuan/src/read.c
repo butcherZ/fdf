@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:52:26 by zyuan             #+#    #+#             */
-/*   Updated: 2018/02/02 20:24:31 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/02/03 01:30:24 by butcherz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,33 +27,34 @@ typedef	struct s_vector
 char		**my_get_line(int fd, char **line)
 {
 		char	**tab;
-		t_vector	vector[20];
+		t_vector	*vector;
 		int		height;
 		int		width;
 
 		height = 0;
+		vector = malloc(sizeof(t_vector) * 20);
 		while (get_next_line(fd, line) == 1)
 		{
 			printf("size of line is %zu\n", ft_strlen(*line));
 			vector[height].y = height;
 		  // printf("y is %d\n", vector[height].y);	
-			height++;
 			tab = ft_strsplit(*line, ' ');
 			if (tab)
 			{
 				width = 0;
 				while (tab[width])
 				{
-					vector[width].x = width;
-					vector[width].z = ft_atoi(tab[width]);
+					vector[height].x = width;
+					vector[height].z = ft_atoi(tab[width]);
 			//		printf("x is %d\n", vector[width].x);
 			//		printf("z is %d\n", vector[width].z);
 					width++;
 				}
-			//printf("width is %d\n", width);
+			printf("width is %d\n", width);
 			}
+			height++;
 		}
-	///	printf("height is %d\n", height);
+		printf("height is %d\n", height);
 		for (int i = 0; i < height; i++)
 		{
 			for (int i = 0; i < width; i++)
