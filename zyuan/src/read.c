@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:52:26 by zyuan             #+#    #+#             */
-/*   Updated: 2018/02/03 01:30:24 by butcherz         ###   ########.fr       */
+/*   Updated: 2018/02/09 15:01:23 by butcherz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,6 @@
 
 /* don't forget to handle file errors!*/
 
-typedef	struct s_vector
-{
-		int		x;
-		int		y;
-		int		z;
-}				t_vector;
-
-
 /*
 1) New variable to return t_vector new_vector *
 2) We malloc this variable + 1 from the vector
@@ -32,14 +24,14 @@ typedef	struct s_vector
 5) We free vector
 6) we return
 */
-t_vector	*realloc_and_append_struct(t_vector *vectors, char **tab, int elements_number, int width)
+t_vector	*realloc_and_append_struct(t_vector *vectors, char **tab, int total, int width)
 {
 	int i;
 	t_vector *new_vector;
 
 	i = 0;
-	new_vector = malloc(sizeof(t_vector) * (elements_number + 1));
-	while (i < elements_number)
+	new_vector = malloc(sizeof(t_vector) * (total + 1));
+	while (i < total)
 	{
 		new_vector[i] = vectors[i];
 		i++;
@@ -50,7 +42,7 @@ t_vector	*realloc_and_append_struct(t_vector *vectors, char **tab, int elements_
 	return new_vector;
 }
 
-char		**my_get_line(int fd, char **line)
+t_vector	*parse_file(int fd, char **line)
 {
 		char	**tab;
 		t_vector	*vector;
@@ -74,7 +66,6 @@ char		**my_get_line(int fd, char **line)
 					// vector[i].x = width;
 					// vector[i].z = ft_atoi(tab[width]);
 					vector = realloc_and_append_struct(vector, tab, i, width);
-
 					width++;
 					i++;
 				}
@@ -82,13 +73,13 @@ char		**my_get_line(int fd, char **line)
 			height++;
 		}
 
-		for (int i = 0; i < 20 * 20; i++)
+		for (int i = 0; i < 19 * 11; i++)
 		{
 				printf("%d ", vector[i].z);
-				if (i % 20 == 0 && i != 0)
+				if (i % 19 == 0 && i != 0)
 					printf("\n");
 		}
-	return (tab);
+	return (vector);
 }
 
 /*void	print_tab(char **str)
@@ -108,29 +99,3 @@ char		**my_get_line(int fd, char **line)
 			free(str);
 		}
 }*/
-
-int main(int argc, char *argv[])
-{
-	int		fd;
-	char	 *line;
-	char	**tab;
-
-	fd = 0;
-	if (argc != 2)
-	{
-		ft_putstr("wrong arguments numbers\n");
-		return (-1);
-	}
-	if (argc == 2)
-	{
-		fd = open(argv[1], O_RDONLY);
-		if (fd == -1)
-			return (-1);
-		printf("something\n");
-		/*tab = */my_get_line(fd, &line);
-//		print_tab(tab);
-	}
-	free(line);
-	close(fd);
-	return (0);
-}

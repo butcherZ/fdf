@@ -6,7 +6,7 @@
 #    By: zyuan <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 19:48:50 by zyuan             #+#    #+#              #
-#    Updated: 2018/01/17 20:00:45 by zyuan            ###   ########.fr        #
+#    Updated: 2018/02/09 15:30:58 by butcherz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = fdf
 
 #src / obj files
 SRC = main.c \
+      read.c \
 
 OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 
@@ -22,10 +23,10 @@ CC  = gcc
 CFLAGS  = -Wall -Wextra -Werror -g
 
 # mlx library
-MLX  = ./miniLibX/
+MLX  = ./minilibx/
 MLX_LIB = $(addprefix $(MLX),mlx.a)
-MLX_INC = -I ./miniLibX
-MLX_LNK = -L ./miniLibX -l mlx -framework OpenGL -framework AppKit
+MLX_INC = -I ./minilibx
+MLX_LNK = -L ./minilibx -lmlx -framework OpenGL -framework AppKit
 
 # ft library
 FT = ./libft/

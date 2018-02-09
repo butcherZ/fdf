@@ -1,4 +1,4 @@
-#include "../minilibx/mlx.h"
+#include "mlx.h"
 #include "fdf.h"
 #include "../libft/libft.h"
 #include <stdio.h>
@@ -131,19 +131,20 @@ int main(int argc, char *argv[])
 	char *line;
 
 	fd = 0;
-	ft_putchar('a');
+	line = NULL;
 	if (argc != 2)
 	{
-		write(1, "error\n", 6);
+		ft_putstr("wrong arguments numbers\n");
 		return (-1);
 	}
 	if (argc == 2)
-		fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &line) == 1)
 	{
-		printf("===========line is %s=============\n", line);
-		free(line);
+		fd = open(argv[1], O_RDONLY);
+		if (fd == -1)
+			return (-1);
+		parse_file(fd, &line);
 	}
+	free(line);
 	close(fd);
 	map.mlx = mlx_init();
 	map.win = mlx_new_window(map.mlx, 700, 700, "is this shit working?");

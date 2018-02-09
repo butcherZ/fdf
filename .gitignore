@@ -1,0 +1,5 @@
+*.o
+*.sw*
+./zyuan/fdf
+./zyuan/obj
+maps/test.fdf
