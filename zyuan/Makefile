@@ -20,7 +20,7 @@ OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 
 # compiler
 CC  = gcc
-CFLAGS  = -Wall -Wextra -Werror -g
+CFLAGS  = -Wall -Wextra -g
 
 # mlx library
 MLX  = ./minilibx/
