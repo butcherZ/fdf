@@ -48,8 +48,6 @@ void	draw_map(t_mlx *map, int color, int scale_fac)
 	while (i < map->info.total)	
 	{
 		iso = cart_to_iso(map, i);
-		//isox = (map->vector[i].x - map->vector[i].y);
-		//isoy = (map->vector[i].x + map->vector[i].y) / 2;
 		if (map->vector[i].z != 0)
 			color = 0xFFFFFF;
 		else
