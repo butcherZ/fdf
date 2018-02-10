@@ -54,6 +54,7 @@ typedef struct s_mlx
 	void		*win;
 	int			x;
 	int			y;
+	int 	size_scale;
 	t_img		img;
 	t_vector	*vector;
 	t_info		info;

@@ -23,13 +23,13 @@ t_iso	*cart_to_iso(t_mlx *map, int i)
 	t_iso	*iso;
 
 	iso = malloc(sizeof(t_iso) * map->info.total);
-	
+
 	iso->x = (map->vector[i].x - map->vector[i].y);
 	iso->y = (map->vector[i].x + map->vector[i].y) / 2;
 	iso->z = map->vector[i].z;
 	printf("isox is %d\n, isoy is %d\n", iso->x, iso->y);
 
-	
+
 	return (iso);
 }
 
@@ -39,13 +39,13 @@ void	scale(t_iso *iso, int factor)
 	iso->y = iso->y * factor;
 }
 void	draw_map(t_mlx *map, int color, int scale_fac)
-{	
+{
 	int	i;
 	t_iso	*iso;
 	i = 0;
-	
+
 	//printf("total is %d\n", map->info.total);
-	while (i < map->info.total)	
+	while (i < map->info.total)
 	{
 		iso = cart_to_iso(map, i);
 		if (map->vector[i].z != 0)
@@ -54,12 +54,11 @@ void	draw_map(t_mlx *map, int color, int scale_fac)
 			color = 0xFF0000;
 			scale(iso, scale_fac);
 			img_put_pixel(map, iso->x + 100, iso->y + 100, color);
-		i++;	
+		i++;
 	}
 }
 int		my_key_funct(int keycode, t_mlx *map)
 {
-
 	printf("key event %d\n", keycode);
 	if (keycode == 53)
 	{
@@ -71,7 +70,21 @@ int		my_key_funct(int keycode, t_mlx *map)
 	{
 		mlx_clear_window(map->mlx, map->win);
 		init_image(map);
-		draw_map(map,  0x0087CE, 10);
+		draw_map(map,  0x0087CE, 5);
+		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
+	}
+	if (keycode == 19)
+	{
+		mlx_clear_window(map->mlx, map->win);
+		init_image(map);
+		draw_map(map,  0x0087CE, ++map->size_scale);
+		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
+	}
+	if (keycode == 20)
+	{
+		init_image(map);
+		mlx_clear_window(map->mlx, map->win);
+		draw_map(map,  0x0087CE, --map->size_scale);
 		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
 	}
 	return (0);
@@ -87,6 +100,7 @@ int main(int argc, char *argv[])
 
 	fd = 0;
 	line = NULL;
+	map.size_scale = 1;
 	if (argc != 2)
 	{
 		ft_putstr("wrong arguments numbers\n");
