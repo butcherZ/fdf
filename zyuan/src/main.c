@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 void	init_image(t_mlx *mlx)
 {
@@ -15,7 +16,8 @@ void	init_image(t_mlx *mlx)
 }
 void	img_put_pixel(t_mlx *mlx, int x, int y, int color)
 {
-	mlx->img.addr[y * (mlx->img.size_line / 4) + x] = color;
+	if((x > 0 && x < WIN_WIDTH) && (y > 0 && y < WIN_HEIGHT))
+		mlx->img.addr[y * (mlx->img.size_line / 4) + x] = color;
 	//printf("result is %d\n", y * 19 + x);
 }
 t_iso	*cart_to_iso(t_mlx *map, int i)
@@ -53,7 +55,7 @@ void	draw_map(t_mlx *map, int color, int scale_fac)
 		else
 			color = 0xFF0000;
 			scale(iso, scale_fac);
-			img_put_pixel(map, iso->x + 100, iso->y + 100, color);
+			img_put_pixel(map, iso->x, iso->y, color);
 		i++;
 	}
 }
@@ -121,7 +123,7 @@ int main(int argc, char *argv[])
 	}
 	 close(fd);
 	map.mlx = mlx_init();
-	 map.win = mlx_new_window(map.mlx, 700, 700, "is this shit working?");
+	 map.win = mlx_new_window(map.mlx, 1024, 768, "is this shit working?");
 	 mlx_key_hook(map.win, my_key_funct, &map);
 	 mlx_loop(map.mlx);
 	return (0);

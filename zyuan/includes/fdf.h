@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 17:50:33 by zyuan             #+#    #+#             */
-/*   Updated: 2018/02/09 17:06:40 by butcherz         ###   ########.fr       */
+/*   Updated: 2018/02/13 16:47:08 by butcherz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <math.h>
 # include "../minilibx/mlx.h"
 
-#define WIN_WIDTH 500
-#define WIN_HEIGHT 500
+#define WIN_WIDTH 1024
+#define WIN_HEIGHT 768
 
 typedef struct s_img
 {
