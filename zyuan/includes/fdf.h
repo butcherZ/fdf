@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 17:50:33 by zyuan             #+#    #+#             */
-/*   Updated: 2018/02/13 16:47:08 by butcherz         ###   ########.fr       */
+/*   Updated: 2018/02/13 18:05:19 by butcherz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 
 #define WIN_WIDTH 1024
 #define WIN_HEIGHT 768
+
+#define degToRad(angleInDegrees) ((angleInDegrees) * M_PI / 180.0)
+#define radToDeg(angleInRadians) ((angleInRadians) * 180.0 / M_PI)
 
 typedef struct s_img
 {

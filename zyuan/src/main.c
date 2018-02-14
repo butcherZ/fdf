@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 void	init_image(t_mlx *mlx)
 {
@@ -23,13 +22,18 @@ void	img_put_pixel(t_mlx *mlx, int x, int y, int color)
 t_iso	*cart_to_iso(t_mlx *map, int i)
 {
 	t_iso	*iso;
-
+	int	angle = 30;
 	iso = malloc(sizeof(t_iso) * map->info.total);
-
-	iso->x = (map->vector[i].x - map->vector[i].y);
+	iso->x = (map->vector[i].x * cos(degToRad(angle))
+			+ map->vector[i].y * cos(degToRad(angle + 120))
+			+ map->vector[i].z * cos(degToRad(angle - 120)));
+	iso->y = (map->vector[i].x * sin(degToRad(angle))
+			+ map->vector[i].y * sin(degToRad(angle + 120))
+			+ map->vector[i].z * sin(degToRad(angle - 120)));
+/*	iso->x = (map->vector[i].x - map->vector[i].y);
 	iso->y = (map->vector[i].x + map->vector[i].y) / 2;
 	iso->z = map->vector[i].z;
-	printf("isox is %d\n, isoy is %d\n", iso->x, iso->y);
+	printf("isox is %d\n, isoy is %d\n", iso->x, iso->y);*/
 
 
 	return (iso);
@@ -54,8 +58,8 @@ void	draw_map(t_mlx *map, int color, int scale_fac)
 			color = 0xFFFFFF;
 		else
 			color = 0xFF0000;
-			scale(iso, scale_fac);
-			img_put_pixel(map, iso->x, iso->y, color);
+		scale(iso, scale_fac);
+		img_put_pixel(map, iso->x + 200, iso->y + 200, color);
 		i++;
 	}
 }
@@ -95,7 +99,7 @@ int		my_key_funct(int keycode, t_mlx *map)
 
 int main(int argc, char *argv[])
 {
-	 t_mlx map;
+	t_mlx map;
 	int fd;
 	char *line;
 	t_info	info;
@@ -116,15 +120,15 @@ int main(int argc, char *argv[])
 		map.vector = parse_file(fd, &line, &info);
 		map.info = info;
 		free(line);
-	/*	for (int i = 0; i <= 19 * 3; i++)
-		{
+		/*	for (int i = 0; i <= 19 * 3; i++)
+			{
 			printf("x is %d y is %d z is %d\n", map.vector[i].x, map.vector[i].y, map.vector[i].z);
-		}*/
+			}*/
 	}
-	 close(fd);
+	close(fd);
 	map.mlx = mlx_init();
-	 map.win = mlx_new_window(map.mlx, 1024, 768, "is this shit working?");
-	 mlx_key_hook(map.win, my_key_funct, &map);
-	 mlx_loop(map.mlx);
+	map.win = mlx_new_window(map.mlx, 1024, 768, "is this shit working?");
+	mlx_key_hook(map.win, my_key_funct, &map);
+	mlx_loop(map.mlx);
 	return (0);
 }
