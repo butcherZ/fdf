@@ -22,6 +22,7 @@ void	img_put_pixel(t_mlx *mlx, int x, int y, int color)
 t_iso	*cart_to_iso(t_mlx *map, int i)
 {
 	t_iso	*iso;
+
 	int	angle = 30;
 	iso = malloc(sizeof(t_iso) * map->info.total);
 	iso->x = (map->vector[i].x * cos(degToRad(angle))
@@ -33,9 +34,8 @@ t_iso	*cart_to_iso(t_mlx *map, int i)
 /*	iso->x = (map->vector[i].x - map->vector[i].y);
 	iso->y = (map->vector[i].x + map->vector[i].y) / 2;
 	iso->z = map->vector[i].z;
-	printf("isox is %d\n, isoy is %d\n", iso->x, iso->y);*/
-
-
+	printf("isox is %d\n, isoy is %d\n", iso->x, iso->y);
+*/
 	return (iso);
 }
 
@@ -55,17 +55,40 @@ void	draw_map(t_mlx *map, int color, int scale_fac)
 	{
 		iso = cart_to_iso(map, i);
 		if (map->vector[i].z != 0)
-			color = 0xFFFFFF;
-		else
 			color = 0xFF0000;
+		else
+			color = 0xFFFFFF;
 		scale(iso, scale_fac);
-		img_put_pixel(map, iso->x + 200, iso->y + 200, color);
+		img_put_pixel(map, iso->x + 500, iso->y + 300, color);
+//		img_put_pixel(map, map->vector[i].x, map->vector[i].y, color);
 		i++;
+	}
+}
+void	draw_heart(t_mlx *map, int color)
+{
+	int plus = map->info.width;
+	while (plus < WIN_WIDTH)
+	{
+		int i = 0;
+		while (i < map->info.total)
+		{
+			if (map->vector[i].z != 0)
+				color = 0xFF0000;
+			else
+				color = 0x000000;
+			img_put_pixel(map, map->vector[i].x, map->vector[i].y, color);
+			img_put_pixel(map, map->vector[i].x, map->vector[i].y + 150, color);
+			img_put_pixel(map, map->vector[i].x + plus, map->vector[i].y, color);
+			img_put_pixel(map, map->vector[i].x + plus, map->vector[i].y + 150, color);
+			
+			i++;
+		}
+		plus = plus + map->info.width;
 	}
 }
 int		my_key_funct(int keycode, t_mlx *map)
 {
-	printf("key event %d\n", keycode);
+//	printf("key event %d\n", keycode);
 	if (keycode == 53)
 	{
 		printf("you are pressing ESC\n");
@@ -77,6 +100,7 @@ int		my_key_funct(int keycode, t_mlx *map)
 		mlx_clear_window(map->mlx, map->win);
 		init_image(map);
 		draw_map(map,  0x0087CE, 5);
+		draw_heart(map, 0x0087CE);
 		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
 	}
 	if (keycode == 19)
@@ -92,6 +116,11 @@ int		my_key_funct(int keycode, t_mlx *map)
 		mlx_clear_window(map->mlx, map->win);
 		draw_map(map,  0x0087CE, --map->size_scale);
 		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
+	}
+	if (keycode == 21)
+	{
+		init_image(map);
+		mlx_string_put(map->mlx, map->win, 150, 80, 0xFF0000, "Happy Valentine's day everyone, Here's a buggy heart in its isometric view");
 	}
 	return (0);
 }
