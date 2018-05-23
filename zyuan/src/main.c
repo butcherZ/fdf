@@ -19,6 +19,18 @@ void	img_put_pixel(t_mlx *mlx, int x, int y, int color)
 		mlx->img.addr[y * (mlx->img.size_line / 4) + x] = color;
 	//printf("result is %d\n", y * 19 + x);
 }
+void	empty(t_mlx *mlx)
+{
+	int i;
+
+	i = 0;
+	while (i < WIN_HEIGHT * WIN_WIDTH)
+	{
+		mlx->img.addr[i] = 0;
+		i++;
+	}
+}
+
 t_iso	*cart_to_iso(t_mlx *map, int i)
 {
 	t_iso	*iso;
@@ -44,7 +56,48 @@ void	scale(t_iso *iso, int factor)
 	iso->x = iso->x * factor;
 	iso->y = iso->y * factor;
 }
-void	draw_map(t_mlx *map, int color, int scale_fac)
+
+void	translation_x(t_iso *iso, int factor)
+{
+	iso->x = iso->x + factor;
+}
+
+void	translation_y(t_iso *iso, int factor)
+{
+	iso->y = iso->y + factor;
+}
+void	draw_line(t_mlx *mlx,int x0, int x1, int y0, int y1, int color)
+{
+		int	dx, dy, p, x, y;
+
+		dx = x1 - x0;
+		dy = y1 - y0;
+
+		x = x0;
+		y = y0;
+
+		p = 2 * dy - dx;
+
+		while (x < x1)
+		{
+			if (p >= 0)
+			{
+				img_put_pixel(mlx, x, y, color);
+
+				y++;
+				p = p + 2 * dy - 2 * dx;
+			}
+			else
+			{
+				img_put_pixel(mlx, x, y, color);
+				p = p + 2 * dy;
+			}
+			x++;
+		}
+}
+
+
+void	draw_map(t_mlx *map, int color)
 {
 	int	i;
 	t_iso	*iso;
@@ -58,37 +111,23 @@ void	draw_map(t_mlx *map, int color, int scale_fac)
 			color = 0xFF0000;
 		else
 			color = 0xFFFFFF;
-		scale(iso, scale_fac);
+		scale(iso, map->fac.scale);
+		translation_x(iso, map->fac.translation_x);
+		translation_y(iso, map->fac.translation_y);
+		//draw_line(map, map->iso.x, map->iso.x + 1, map->iso.y, map->iso.y + 1, 0x0087CE);
 		img_put_pixel(map, iso->x + 500, iso->y + 300, color);
+		draw_line(map, iso->x, iso->x + 1, iso->y, iso->y + 1, 0x0087CE);
+
 //		img_put_pixel(map, map->vector[i].x, map->vector[i].y, color);
 		i++;
 	}
+	free(iso);
 }
-void	draw_heart(t_mlx *map, int color)
-{
-	int plus = map->info.width;
-	while (plus < WIN_WIDTH)
-	{
-		int i = 0;
-		while (i < map->info.total)
-		{
-			if (map->vector[i].z != 0)
-				color = 0xFF0000;
-			else
-				color = 0x000000;
-			img_put_pixel(map, map->vector[i].x, map->vector[i].y, color);
-			img_put_pixel(map, map->vector[i].x, map->vector[i].y + 150, color);
-			img_put_pixel(map, map->vector[i].x + plus, map->vector[i].y, color);
-			img_put_pixel(map, map->vector[i].x + plus, map->vector[i].y + 150, color);
-			
-			i++;
-		}
-		plus = plus + map->info.width;
-	}
-}
+
 int		my_key_funct(int keycode, t_mlx *map)
 {
-//	printf("key event %d\n", keycode);
+	printf("key event %d\n", keycode);
+
 	if (keycode == 53)
 	{
 		printf("you are pressing ESC\n");
@@ -97,34 +136,33 @@ int		my_key_funct(int keycode, t_mlx *map)
 	}
 	if (keycode == 18)
 	{
-		mlx_clear_window(map->mlx, map->win);
-		init_image(map);
-		draw_map(map,  0x0087CE, 5);
-		draw_heart(map, 0x0087CE);
-		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
+		map->fac.scale++;
 	}
 	if (keycode == 19)
 	{
-		mlx_clear_window(map->mlx, map->win);
-		init_image(map);
-		draw_map(map,  0x0087CE, ++map->size_scale);
-		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
+		map->fac.scale--;
 	}
-	if (keycode == 20)
+	if (keycode == 124)
 	{
-		init_image(map);
-		mlx_clear_window(map->mlx, map->win);
-		draw_map(map,  0x0087CE, --map->size_scale);
-		mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
+		map->fac.translation_x += 5;
 	}
-	if (keycode == 21)
+	if (keycode == 123)
 	{
-		init_image(map);
-		mlx_string_put(map->mlx, map->win, 150, 80, 0xFF0000, "Happy Valentine's day everyone, Here's a buggy heart in its isometric view");
+		map->fac.translation_x -= 5;
 	}
+	if (keycode == 125)
+	{
+		map->fac.translation_y -= 5;
+	}
+	if (keycode == 126)
+	{
+		map->fac.translation_y += 5;
+	}
+	empty(map);
+	draw_map(map, 0x0087CE);
+	mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
 	return (0);
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -135,7 +173,7 @@ int main(int argc, char *argv[])
 
 	fd = 0;
 	line = NULL;
-	map.size_scale = 1;
+	map.fac.scale = 2;
 	if (argc != 2)
 	{
 		ft_putstr("wrong arguments numbers\n");
@@ -158,6 +196,11 @@ int main(int argc, char *argv[])
 	map.mlx = mlx_init();
 	map.win = mlx_new_window(map.mlx, 1024, 768, "is this shit working?");
 	mlx_key_hook(map.win, my_key_funct, &map);
+	init_image(&map);
+//	draw_line(&map, 200, 300, 200, 300, 0x0087CE);
+
+	draw_map(&map, 0x0087CE);
+	mlx_put_image_to_window(map.mlx, map.win, map.img.img_ptr, 0, 0);
 	mlx_loop(map.mlx);
 	return (0);
 }

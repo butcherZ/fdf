@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 17:50:33 by zyuan             #+#    #+#             */
-/*   Updated: 2018/02/13 18:05:19 by butcherz         ###   ########.fr       */
+/*   Updated: 2018/05/22 16:27:27 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ typedef struct s_img
 
 typedef struct s_vector
 {
-	int		x;
-	int		y;
-	int		z;
+	double		x;
+	double		y;
+	double		z;
 }		t_vector;
 
 typedef	struct	s_info
@@ -44,6 +44,7 @@ typedef	struct	s_info
 	int		width;
 	int		total;
 }		t_info;
+
 typedef struct	s_iso
 {
 	int	x;
@@ -51,19 +52,25 @@ typedef struct	s_iso
 	int	z;
 }		t_iso;
 
+typedef	struct s_fac
+{
+	int	scale;
+	int	translation_x;
+	int	translation_y;
+}		t_fac;
+
 typedef struct s_mlx
 {
 	void		*mlx;
 	void		*win;
 	int			x;
 	int			y;
-	int 	size_scale;
 	t_img		img;
 	t_vector	*vector;
 	t_info		info;
 	t_iso		iso;
+	t_fac		fac;
 }				t_mlx;
-
 
 void			init_image(t_mlx *mlx);
 void			img_put_pixel(t_mlx *mlx, int x, int y, int color);

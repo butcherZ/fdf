@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:52:26 by zyuan             #+#    #+#             */
-/*   Updated: 2018/02/09 15:01:23 by butcherz         ###   ########.fr       */
+/*   Updated: 2018/03/09 18:49:25 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ t_vector	*realloc_and_append_struct(t_vector *vectors, char **tab, t_info *info)
 		new_vector[i] = vectors[i];
 		i++;
 	}
-	new_vector[i].y = info->height;
-	new_vector[i].x = info->width;
-	new_vector[i].z = ft_atoi(tab[info->width]);
+	new_vector[i].y = (double)info->height;
+	new_vector[i].x = (double)info->width;
+	new_vector[i].z = (double)ft_atoi(tab[info->width]);
 	free(vectors);
-	return new_vector;
+	return (new_vector);
 }
 
 t_vector	*parse_file(int fd, char **line, t_info *info)
@@ -60,6 +60,7 @@ t_vector	*parse_file(int fd, char **line, t_info *info)
 				}
 			}
 			info->height++;
+			printf("width is %d, height is %d, total is %d", info->width, info->height, info->total);
 		}
 	return (vector);
 }
