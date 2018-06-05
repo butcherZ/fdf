@@ -15,6 +15,7 @@ NAME = fdf
 #src / obj files
 SRC = main.c \
       read.c \
+      drawline.c \
 
 OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 

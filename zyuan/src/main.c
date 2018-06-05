@@ -43,11 +43,10 @@ t_iso	*cart_to_iso(t_mlx *map, int i)
 	iso->y = (map->vector[i].x * sin(degToRad(angle))
 			+ map->vector[i].y * sin(degToRad(angle + 120))
 			+ map->vector[i].z * sin(degToRad(angle - 120)));
-/*	iso->x = (map->vector[i].x - map->vector[i].y);
-	iso->y = (map->vector[i].x + map->vector[i].y) / 2;
-	iso->z = map->vector[i].z;
-	printf("isox is %d\n, isoy is %d\n", iso->x, iso->y);
-*/
+	/*	iso->x = (map->vector[i].x - map->vector[i].y);
+		iso->y = (map->vector[i].x + map->vector[i].y) / 2;
+		iso->z = map->vector[i].z;*/
+	 
 	return (iso);
 }
 
@@ -68,32 +67,31 @@ void	translation_y(t_iso *iso, int factor)
 }
 void	draw_line(t_mlx *mlx,int x0, int x1, int y0, int y1, int color)
 {
-		int	dx, dy, p, x, y;
+	int	dx, dy, p, x, y;
 
-		dx = x1 - x0;
-		dy = y1 - y0;
+	dx = x1 - x0;
+	dy = y1 - y0;
 
-		x = x0;
-		y = y0;
+	x = x0;
+	y = y0;
 
-		p = 2 * dy - dx;
+	p = 2 * dy - dx;
 
-		while (x < x1)
+	while (x < x1)
+	{
+		if (p >= 0)
 		{
-			if (p >= 0)
-			{
-				img_put_pixel(mlx, x, y, color);
-
-				y++;
-				p = p + 2 * dy - 2 * dx;
-			}
-			else
-			{
-				img_put_pixel(mlx, x, y, color);
-				p = p + 2 * dy;
-			}
-			x++;
+			img_put_pixel(mlx, x, y, color);
+			y++;
+			p = p + 2 * dy - 2 * dx;
 		}
+		else
+		{
+			img_put_pixel(mlx, x, y, color);
+			p = p + 2 * dy;
+		}
+		x++;
+	}
 }
 
 
@@ -103,7 +101,7 @@ void	draw_map(t_mlx *map, int color)
 	t_iso	*iso;
 	i = 0;
 
-	//printf("total is %d\n", map->info.total);
+	printf("total is %d\n", map->info.total);
 	while (i < map->info.total)
 	{
 		iso = cart_to_iso(map, i);
@@ -114,11 +112,11 @@ void	draw_map(t_mlx *map, int color)
 		scale(iso, map->fac.scale);
 		translation_x(iso, map->fac.translation_x);
 		translation_y(iso, map->fac.translation_y);
-		//draw_line(map, map->iso.x, map->iso.x + 1, map->iso.y, map->iso.y + 1, 0x0087CE);
-		img_put_pixel(map, iso->x + 500, iso->y + 300, color);
-		draw_line(map, iso->x, iso->x + 1, iso->y, iso->y + 1, 0x0087CE);
-
-//		img_put_pixel(map, map->vector[i].x, map->vector[i].y, color);
+	
+//		printf("isox is %d\n, isoy is %d\n", iso->x, iso->y);
+	//draw_line(map, iso->x + 500, iso->x + 500 + i, iso->y + 300, iso->y +300 + i, 0x0087CE);
+		brasenham(map, *iso, *(iso + 1), 0x0087CE);
+		img_put_pixel(map, iso->x, iso->y, color);
 		i++;
 	}
 	free(iso);
@@ -173,7 +171,7 @@ int main(int argc, char *argv[])
 
 	fd = 0;
 	line = NULL;
-	map.fac.scale = 2;
+	map.fac.scale = 20;
 	if (argc != 2)
 	{
 		ft_putstr("wrong arguments numbers\n");
@@ -187,18 +185,12 @@ int main(int argc, char *argv[])
 		map.vector = parse_file(fd, &line, &info);
 		map.info = info;
 		free(line);
-		/*	for (int i = 0; i <= 19 * 3; i++)
-			{
-			printf("x is %d y is %d z is %d\n", map.vector[i].x, map.vector[i].y, map.vector[i].z);
-			}*/
 	}
 	close(fd);
 	map.mlx = mlx_init();
 	map.win = mlx_new_window(map.mlx, 1024, 768, "is this shit working?");
 	mlx_key_hook(map.win, my_key_funct, &map);
 	init_image(&map);
-//	draw_line(&map, 200, 300, 200, 300, 0x0087CE);
-
 	draw_map(&map, 0x0087CE);
 	mlx_put_image_to_window(map.mlx, map.win, map.img.img_ptr, 0, 0);
 	mlx_loop(map.mlx);

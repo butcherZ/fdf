@@ -33,9 +33,9 @@ typedef struct s_img
 
 typedef struct s_vector
 {
-	double		x;
-	double		y;
-	double		z;
+	float		x;
+	float		y;
+	float		z;
 }		t_vector;
 
 typedef	struct	s_info
@@ -76,4 +76,18 @@ void			init_image(t_mlx *mlx);
 void			img_put_pixel(t_mlx *mlx, int x, int y, int color);
 t_vector		*realloc_and_append_struct(t_vector *vectors, char **tab, t_info *info);
 t_vector		*parse_file(int fd, char **line, t_info *info);
+void    horizontalright(t_mlx *map, t_iso first, t_iso second, int color);
+void    horizontalleft(t_mlx *map, t_iso first, t_iso second, int color);
+void    brasenham2(t_mlx *map, t_iso first, t_iso second, int color);
+void    brasenham(t_mlx *map, t_iso first, t_iso second, int color);
+void    firsto(t_mlx *map, t_iso first, t_iso second, int color);
+void    secondo(t_mlx *map, t_iso first, t_iso second, int color);
+void    thirdo(t_mlx *map, t_iso first, t_iso second, int color);
+void    fourtho(t_mlx *map, t_iso first, t_iso second, int color);
+void    fiftho(t_mlx *map, t_iso first, t_iso second, int color);
+void    sixtho(t_mlx *map, t_iso first, t_iso second, int color);
+void    seveno(t_mlx *map, t_iso first, t_iso second, int color);
+void    eighto(t_mlx *map, t_iso first, t_iso second, int color);
+void    verticaldown(t_mlx *map, t_iso first, t_iso second, int color);
+void    verticalup(t_mlx *map, t_iso first, t_iso second, int color);
 #endif
