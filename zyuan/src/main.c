@@ -95,12 +95,28 @@ void	draw_line(t_mlx *mlx,int x0, int x1, int y0, int y1, int color)
 }
 
 
+void	line(int x0, int y0, int x1, int y1, t_mlx *map)
+{
+	int dx = abs(x1-x0), sx = x0<x1 ? 1 : -1;
+	int dy = abs(y1-y0), sy = y0<y1 ? 1 : -1; 
+	int err = (dx>dy ? dx : -dy)/2, e2;
+ 
+  for(;;){
+	    img_put_pixel(map, x0,y0, 150);
+	      if (x0==x1 && y0==y1) break;
+	      e2 = err;
+	    if (e2 >-dx) { err -= dy; x0 += sx; }
+      if (e2 < dy) { err += dx; y0 += sy; }		
+}
+}
+
 void	draw_map(t_mlx *map, int color)
 {
 	int	i;
 	t_iso	*iso;
 	i = 0;
 
+	line(10, 20, 150, 220, map);
 	printf("total is %d\n", map->info.total);
 	while (i < map->info.total)
 	{
@@ -115,7 +131,8 @@ void	draw_map(t_mlx *map, int color)
 	
 //		printf("isox is %d\n, isoy is %d\n", iso->x, iso->y);
 	//draw_line(map, iso->x + 500, iso->x + 500 + i, iso->y + 300, iso->y +300 + i, 0x0087CE);
-		brasenham(map, *iso, *(iso + 1), 0x0087CE);
+		//brasenham(map, *iso, *(iso + 1), 0x0087CE);
+		line(iso->x, iso->y, (iso + 1)->x, (iso+1)->y, map);
 		img_put_pixel(map, iso->x, iso->y, color);
 		i++;
 	}
