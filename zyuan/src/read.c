@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:52:26 by zyuan             #+#    #+#             */
-/*   Updated: 2018/03/09 18:49:25 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/06/11 20:36:03 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_vector	*parse_file(int fd, char **line, t_info *info)
 				}
 			}
 			info->height++;
-			printf("width is %d, height is %d, total is %d", info->width, info->height, info->total);
+			printf("width is %d, height is %d, total is %d\n", info->width, info->height, info->total);
 		}
 	return (vector);
 }

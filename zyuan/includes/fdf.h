@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 17:50:33 by zyuan             #+#    #+#             */
-/*   Updated: 2018/05/22 16:27:27 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/06/11 20:14:26 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ typedef	struct	s_info
 
 typedef struct	s_iso
 {
-	int	x;
-	int	y;
-	int	z;
+	float	x;
+	float	y;
+	float	z;
 }		t_iso;
 
 typedef	struct s_fac
