@@ -175,19 +175,19 @@ int		my_key_funct(int keycode, t_mlx *map)
 	}
 	if (keycode == 124)
 	{
-		map->fac.translation_x += 5;
+		map->fac.translation_x += 15;
 	}
 	if (keycode == 123)
 	{
-		map->fac.translation_x -= 5;
+		map->fac.translation_x -= 15;
 	}
 	if (keycode == 125)
 	{
-		map->fac.translation_y -= 5;
+		map->fac.translation_y -= 15;
 	}
 	if (keycode == 126)
 	{
-		map->fac.translation_y += 5;
+		map->fac.translation_y += 15;
 	}
 	empty(map);
 	draw_map(map, 0x0087CE);
