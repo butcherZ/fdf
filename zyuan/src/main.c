@@ -45,25 +45,49 @@ void	translation_y(t_iso *iso, int factor)
 {
 	iso->y = iso->y + factor;
 }
-
+void	altitude_plus(t_vector *vec, int factor)
+{
+	vec->z = vec->z + factor;
+}
+void	altitude_minus(t_vector *vec, int factor)
+{
+	vec->z = vec->z - factor;
+}
 void	cart_to_iso(t_mlx *map, t_iso *iso)
 {
 	int	angle = 30;
 	int	i;
 
 	i = 0;
+/*	printf("z is %f\n", map->vector[i].z);
+		change_altitude(&map->vector[i], map->fac.altitude);
+		printf("after z is %f\n", map->vector[i].z);*/
+//	map->fac.altitude = 2;
 	while (i < map->info.total)
 	{
+		if (map->vector[i].z != 0)
+		{
+//			altitude_minus(&map->vector[i], map->fac.altitude);
+			altitude_plus(&map->vector[i], map->fac.altitude);
+			//	map->vector[i].z = map->vector[i].z / 2;
+			printf("fac is %d\n", map->fac.altitude);
+			printf(" i is %d, z is %f\n",i, map->vector[i].z);
+
+		}
+
 		iso[i].x = ((map->vector[i].x * cos(degToRad(angle))
 		+ map->vector[i].y * cos(degToRad(angle + 120))
-		+ (map->vector[i].z) * cos(degToRad(angle - 120))))
-		* map->fac.scale + map->fac.translation_x;
+		+ (map->vector[i].z) * cos(degToRad(angle - 120))));
+//		* map->fac.scale + map->fac.translation_x;
 
 		iso[i].y = ((map->vector[i].x * sin(degToRad(angle))
 		+ map->vector[i].y * sin(degToRad(angle + 120))
-		+ (map->vector[i].z)* sin(degToRad(angle - 120))))
-		* map->fac.scale + map->fac.translation_y;
-		
+		+ (map->vector[i].z)* sin(degToRad(angle - 120))));
+//		* map->fac.scale + map->fac.translation_y;
+
+		scale(&iso[i], map->fac.scale);
+		translation_y(&iso[i], map->fac.translation_y);
+		translation_x(&iso[i], map->fac.translation_x);	
 		i++;
 	}
 }
@@ -97,6 +121,7 @@ void	draw_map(t_mlx *map, int color)
 			color = 0xFF0000;
 		else
 			color = 0xFFFFFF;
+
 		if (iso[i].x >= 0 && iso[i].y >= 0)
 		{
 			if (i % map->info.width != map->info.width - 1 )
@@ -140,21 +165,21 @@ int		my_key_funct(int keycode, t_mlx *map)
 	{
 		map->fac.translation_x -= 15;
 	}
-	if (keycode == 125)
+	if (keycode == 126)
 	{
 		map->fac.translation_y -= 15;
 	}
-	if (keycode == 126)
+	if (keycode == 125)
 	{
 		map->fac.translation_y += 15;
 	}
 	if (keycode == 6)
 	{
-		map->fac.altitude -= 5;
+		map->fac.altitude++;
 	}
 	if (keycode == 7)
 	{
-		map->fac.altitude += 5;
+		map->fac.altitude--;
 	}
 
 	empty(map);
