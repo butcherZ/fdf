@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 17:50:33 by zyuan             #+#    #+#             */
-/*   Updated: 2018/06/11 20:14:26 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/06/14 16:26:20 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef	struct s_fac
 	int	scale;
 	int	translation_x;
 	int	translation_y;
+	int	altitude;
 }		t_fac;
 
 typedef struct s_mlx
