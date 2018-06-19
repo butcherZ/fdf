@@ -45,34 +45,35 @@ void	translation_y(t_iso *iso, int factor)
 {
 	iso->y = iso->y + factor;
 }
-void	altitude_plus(t_vector *vec, int factor)
+void	altitude_plus(t_vector *vec, t_mlx *map)
 {
-	vec->z = vec->z + factor;
+	if (map->fac.altitude == 1)
+		vec->z += 1;
+	if (map->fac.altitude == 2)
+		vec->z -= 1;
+	if (map->fac.altitude == 2 && vec->z == 0)
+		vec->z = -1;
+	if (map->fac.altitude == 1 && vec->z == 0)
+		vec->z = 1;
 }
-void	altitude_minus(t_vector *vec, int factor)
-{
-	vec->z = vec->z - factor;
-}
+
 void	cart_to_iso(t_mlx *map, t_iso *iso)
 {
 	int	angle = 30;
 	int	i;
 
 	i = 0;
-/*	printf("z is %f\n", map->vector[i].z);
-		change_altitude(&map->vector[i], map->fac.altitude);
-		printf("after z is %f\n", map->vector[i].z);*/
 //	map->fac.altitude = 2;
 	while (i < map->info.total)
 	{
 		if (map->vector[i].z != 0)
 		{
-//			altitude_minus(&map->vector[i], map->fac.altitude);
-			altitude_plus(&map->vector[i], map->fac.altitude);
-			//	map->vector[i].z = map->vector[i].z / 2;
+			altitude_plus(&map->vector[i], map);
 			printf("fac is %d\n", map->fac.altitude);
-			printf(" i is %d, z is %f\n",i, map->vector[i].z);
+			 printf(" i is %d, z is %f\n",i, map->vector[i].z);
+			//map->fac.altitude = 0;
 
+			//
 		}
 
 		iso[i].x = ((map->vector[i].x * cos(degToRad(angle))
@@ -90,6 +91,7 @@ void	cart_to_iso(t_mlx *map, t_iso *iso)
 		translation_x(&iso[i], map->fac.translation_x);	
 		i++;
 	}
+	map->fac.altitude = 0;
 }
 
 void	draw_line(int x0, int y0, int x1, int y1, t_mlx *map)
@@ -175,11 +177,11 @@ int		my_key_funct(int keycode, t_mlx *map)
 	}
 	if (keycode == 6)
 	{
-		map->fac.altitude++;
+		map->fac.altitude = 1;
 	}
 	if (keycode == 7)
 	{
-		map->fac.altitude--;
+		map->fac.altitude = 2;
 	}
 
 	empty(map);

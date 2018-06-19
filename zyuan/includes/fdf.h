@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 17:50:33 by zyuan             #+#    #+#             */
-/*   Updated: 2018/06/14 16:26:20 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/06/19 23:08:03 by butcherz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_mlx
 	int			y;
 	t_img		img;
 	t_vector	*vector;
+	t_vector	*origin;
 	t_info		info;
 	t_iso		iso;
 	t_fac		fac;

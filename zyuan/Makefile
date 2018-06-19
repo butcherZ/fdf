@@ -6,7 +6,7 @@
 #    By: zyuan <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 19:48:50 by zyuan             #+#    #+#              #
-#    Updated: 2018/02/09 15:30:58 by butcherz         ###   ########.fr        #
+#    Updated: 2018/06/19 21:54:57 by butcherz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,6 @@ NAME = fdf
 #src / obj files
 SRC = main.c \
       read.c \
-      drawline.c \
 
 OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 
