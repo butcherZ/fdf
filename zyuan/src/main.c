@@ -56,6 +56,19 @@ void	altitude_plus(t_vector *vec, t_mlx *map)
 	if (map->fac.altitude == 1 && vec->z == 0)
 		vec->z = 1;
 }
+void	test_trans(t_mlx *map, t_iso *iso)
+{
+		MATRIX m;
+		m[0][0] = 1.0;   m[0][1] = 0.0;  m[0][2] = 0.0;
+		m[1][0] = 0.0;   m[1][1] = 1.0;  m[1][2] = 0.0;
+		m[2][0] = map->fac.translation_x; m[2][1] = map->fac.translation_y; m[2][2] = 1.0;
+
+		int transformedX, transformedY;
+		transformedX = (int) (iso->x * m[0][0] + iso->y * m[1][0] + m[2][0]);
+		transformedY = (int) (iso->x * m[0][1] + iso->y * m[1][1] + m[2][1]);
+		iso->x = transformedX;
+		iso->y = transformedY;
+}
 
 void	cart_to_iso(t_mlx *map, t_iso *iso)
 {
@@ -63,34 +76,31 @@ void	cart_to_iso(t_mlx *map, t_iso *iso)
 	int	i;
 
 	i = 0;
-//	map->fac.altitude = 2;
 	while (i < map->info.total)
 	{
 		if (map->vector[i].z != 0)
 		{
 			altitude_plus(&map->vector[i], map);
-			printf("fac is %d\n", map->fac.altitude);
-			 printf(" i is %d, z is %f\n",i, map->vector[i].z);
-			//map->fac.altitude = 0;
-
-			//
+	//		printf("fac is %d\n", map->fac.altitude);
+	//		printf("======vec i is %d, x is %f\n, y is %f\n, z is %f\n========",i,map->vector[i].x, map->vector[i].y, map->vector[i].z);
 		}
 
 		iso[i].x = ((map->vector[i].x * cos(degToRad(angle))
 		+ map->vector[i].y * cos(degToRad(angle + 120))
 		+ (map->vector[i].z) * cos(degToRad(angle - 120))));
-//		* map->fac.scale + map->fac.translation_x;
 
 		iso[i].y = ((map->vector[i].x * sin(degToRad(angle))
 		+ map->vector[i].y * sin(degToRad(angle + 120))
 		+ (map->vector[i].z)* sin(degToRad(angle - 120))));
-//		* map->fac.scale + map->fac.translation_y;
 
 		scale(&iso[i], map->fac.scale);
-		translation_y(&iso[i], map->fac.translation_y);
-		translation_x(&iso[i], map->fac.translation_x);	
+	//	translation_y(&iso[i], map->fac.translation_y);
+	//	translation_x(&iso[i], map->fac.translation_x);	
+		test_trans(map, &iso[i]);
+
 		i++;
 	}
+	printf("\n\n\n\n\n\n\n\n\n" );
 	map->fac.altitude = 0;
 }
 
@@ -101,6 +111,10 @@ void	draw_line(int x0, int y0, int x1, int y1, t_mlx *map)
 	int err = (dx>dy ? dx : -dy)/2, e2;
 
 	while(1){
+		if (y1 > y0)
+		{
+			img_put_pixel(map, x0, y0, 0xFFFFFF);
+		}
 		img_put_pixel(map, x0, y0, 150);
 		if (x0==x1 && y0==y1) break;
 		e2 = err;
@@ -123,22 +137,21 @@ void	draw_map(t_mlx *map, int color)
 			color = 0xFF0000;
 		else
 			color = 0xFFFFFF;
-
-		if (iso[i].x >= 0 && iso[i].y >= 0)
+//		printf("=======(i) is %d\n,iso x is %f\n, iso y is %f\n=======", i, iso[i].x, iso[i].y);
+		if (i % map->info.width != map->info.width - 1)
 		{
-			if (i % map->info.width != map->info.width - 1 )
-			{
 				draw_line((int)iso[i].x, (int)iso[i].y, (int)iso[i + 1].x, (int)iso[i + 1].y, map);
-			}
-			if (  map->info.total - i > map->info.width)
-			{
-				draw_line((int)iso[i].x, (int)iso[i].y, (int)iso[i + map->info.width].x, (int)iso[i + map->info.width].y, map);
-			}
 		}
-			img_put_pixel(map, iso[i].x, iso[i].y, color);
-			i++;
+		if (map->info.total - i > map->info.width)
+		{
+			draw_line((int)iso[i].x, (int)iso[i].y, (int)iso[i + map->info.width].x, (int)iso[i + map->info.width].y, map);
+		}
+		img_put_pixel(map, iso[i].x, iso[i].y, color);
+		i++;
+		printf("12\n");
 	}
-	free(iso);
+	printf("someting\n");
+	//free(iso);
 }
 
 int		my_key_funct(int keycode, t_mlx *map)
@@ -187,7 +200,7 @@ int		my_key_funct(int keycode, t_mlx *map)
 	empty(map);
 	draw_map(map, 0x0087CE);
 	mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
-	return (0);
+	return (1);
 }
 
 int main(int argc, char *argv[])
@@ -217,10 +230,12 @@ int main(int argc, char *argv[])
 	close(fd);
 	map.mlx = mlx_init();
 	map.win = mlx_new_window(map.mlx, 1024, 768, "is this shit working?");
+	init_image(&map);
 	mlx_key_hook(map.win, my_key_funct, &map);
 	init_image(&map);
 	draw_map(&map, 0x0087CE);
 	mlx_put_image_to_window(map.mlx, map.win, map.img.img_ptr, 0, 0);
+	mlx_key_hook(map.win, my_key_funct, &map);
 	mlx_loop(map.mlx);
 	return (0);
 }
