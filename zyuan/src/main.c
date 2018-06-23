@@ -36,15 +36,6 @@ void	scale(t_iso *iso, int factor)
 	iso->y = iso->y * factor;
 }
 
-void	translation_x(t_iso *iso, int factor)
-{
-	iso->x = iso->x + factor;
-}
-
-void	translation_y(t_iso *iso, int factor)
-{
-	iso->y = iso->y + factor;
-}
 void	altitude_plus(t_vector *vec, t_mlx *map)
 {
 	if (map->fac.altitude == 1)
@@ -56,51 +47,118 @@ void	altitude_plus(t_vector *vec, t_mlx *map)
 	if (map->fac.altitude == 1 && vec->z == 0)
 		vec->z = 1;
 }
-void	test_trans(t_mlx *map, t_iso *iso)
+void	test_rotation_x(t_mlx *map, t_iso *iso)
 {
 		MATRIX m;
-		m[0][0] = 1.0;   m[0][1] = 0.0;  m[0][2] = 0.0;
-		m[1][0] = 0.0;   m[1][1] = 1.0;  m[1][2] = 0.0;
-		m[2][0] = map->fac.translation_x; m[2][1] = map->fac.translation_y; m[2][2] = 1.0;
 
-		int transformedX, transformedY;
-		transformedX = (int) (iso->x * m[0][0] + iso->y * m[1][0] + m[2][0]);
-		transformedY = (int) (iso->x * m[0][1] + iso->y * m[1][1] + m[2][1]);
+		m[0][0] = 1.0;   m[0][1] = 0.0;  m[0][2] = 0.0; m[0][3] = 0.0;
+		m[1][0] = 0.0;   m[1][1] = cos(degToRad(map->fac.rotation_x));  m[1][2] = -sin(degToRad(map->fac.rotation_x)); m[1][3] = 0;
+		m[2][0] = 0.0;	 m[2][1] = sin(degToRad(map->fac.rotation_x));  m[2][2] = cos(degToRad(map->fac.rotation_x));	m[2][3] = 1.0;
+		m[3][0] = 0.0;	 m[3][1] = 0.0;  m[3][2] = 0.0; m[3][3] = 1.0;
+
+		int transformedX, transformedY, transformedZ;
+
+		transformedX = (int) (iso->x * m[0][0] + iso->y * m[0][1] + iso->z * m[0][2] + m[0][3]);
+		transformedY = (int) (iso->x * m[1][0] + iso->y * m[1][1] + iso->z * m[1][2] + m[1][3]);
+		transformedZ = (int) (iso->x * m[2][0] + iso->y * m[2][2] + iso->z * m[2][2] + m[2][3]);
+
 		iso->x = transformedX;
 		iso->y = transformedY;
+		iso->z = transformedZ;
+
+}
+
+void	test_rotation_y(t_mlx *map, t_iso *iso)
+{
+		MATRIX m;
+
+		m[0][0] = cos(degToRad(map->fac.rotation_y));   m[0][1] = 0.0;  m[0][2] = sin(degToRad(map->fac.rotation_y)); m[0][3] = 0.0;
+		m[1][0] = 0.0;   m[1][1] = 1.0;  m[1][2] = 0.0; m[1][3] = 0.0;
+		m[2][0] = -sin(degToRad(map->fac.rotation_y));	 m[2][1] = 0.0;  m[2][2] = cos(degToRad(map->fac.rotation_y));	m[2][3] = 1.0;
+		m[3][0] = 0.0;	 m[3][1] = 0.0;  m[3][2] = 0.0; m[3][3] = 1.0;
+
+		int transformedX, transformedY, transformedZ;
+
+		transformedX = (int) (iso->x * m[0][0] + iso->y * m[0][1] + iso->z * m[0][2] + m[0][3]);
+		transformedY = (int) (iso->x * m[1][0] + iso->y * m[1][1] + iso->z * m[1][2] + m[1][3]);
+		transformedZ = (int) (iso->x * m[2][0] + iso->y * m[2][2] + iso->z * m[2][2] + m[2][3]);
+
+		iso->x = transformedX;
+		iso->y = transformedY;
+		iso->z = transformedZ;
+
+}
+void	test_rotation_z(t_mlx *map, t_iso *iso)
+{
+		MATRIX m;
+		m[0][0] = cos(degToRad(map->fac.rotation_z));   m[0][1] = -sin(degToRad(map->fac.rotation_z));  m[0][2] = 0.0; m[0][3] = 0.0;
+		m[1][0] = sin(degToRad(map->fac.rotation_z));  m[1][1] = cos(degToRad(map->fac.rotation_z));;  m[1][2] = 0.0; m[1][3] = 0.0;
+		m[2][0] = 0.0;	 m[2][1] = 0.0;  m[2][2] = 0.0; m[2][3] = 1.0;
+		m[3][0] = 0.0;	 m[3][1] = 0.0;  m[3][2] = 0.0; m[3][3] = 1.0;
+
+		int transformedX, transformedY, transformedZ;
+
+		transformedX = (int) (iso->x * m[0][0] + iso->y * m[0][1] + iso->z * m[0][2] + m[0][3]);
+		transformedY = (int) (iso->x * m[1][0] + iso->y * m[1][1] + iso->z * m[1][2] + m[1][3]);
+		transformedZ = (int) (iso->x * m[2][0] + iso->y * m[2][2] + iso->z * m[2][2] + m[2][3]);
+
+		iso->x = transformedX;
+		iso->y = transformedY;
+		iso->z = transformedZ;
+
+}
+
+void	translation(t_mlx *map, t_iso *iso)
+{
+		MATRIX m;
+		m[0][0] = 1.0;   m[0][1] = 0.0;  m[0][2] = 0.0; m[0][3] = map->fac.translation_x;
+		m[1][0] = 0.0;   m[1][1] = 1.0;  m[1][2] = 0.0; m[1][3] = map->fac.translation_y;
+		m[2][0] = 0.0;	 m[2][1] = 0.0;  m[2][2] = 1.0;	m[2][3] = map->fac.translation_z;
+		m[3][0] = 0.0;	 m[3][1] = 0.0;  m[3][2] = 0.0; m[3][3] = 1;
+
+		int transformedX, transformedY, transformedZ;
+
+		transformedX = (int) (iso->x * m[0][0] + iso->y * m[0][1] + iso->z * m[0][2] + m[0][3]);
+		transformedY = (int) (iso->x * m[1][0] + iso->y * m[1][1] + iso->z * m[1][2] + m[1][3]);
+		transformedZ = (int) (iso->x * m[2][0] + iso->y * m[2][2] + iso->z * m[2][2] + m[2][3]);
+
+		iso->x = transformedX;
+		iso->y = transformedY;
+		iso->z = transformedZ;
+
 }
 
 void	cart_to_iso(t_mlx *map, t_iso *iso)
 {
 	int	angle = 30;
 	int	i;
-
 	i = 0;
 	while (i < map->info.total)
 	{
 		if (map->vector[i].z != 0)
 		{
 			altitude_plus(&map->vector[i], map);
-	//		printf("fac is %d\n", map->fac.altitude);
-	//		printf("======vec i is %d, x is %f\n, y is %f\n, z is %f\n========",i,map->vector[i].x, map->vector[i].y, map->vector[i].z);
 		}
 
-		iso[i].x = ((map->vector[i].x * cos(degToRad(angle))
+	/*	iso[i].x = ((map->vector[i].x * cos(degToRad(angle))
 		+ map->vector[i].y * cos(degToRad(angle + 120))
 		+ (map->vector[i].z) * cos(degToRad(angle - 120))));
 
 		iso[i].y = ((map->vector[i].x * sin(degToRad(angle))
 		+ map->vector[i].y * sin(degToRad(angle + 120))
-		+ (map->vector[i].z)* sin(degToRad(angle - 120))));
+		+ (map->vector[i].z)* sin(degToRad(angle - 120))));*/
+
+		iso[i].x = map->vector[i].x;
+		iso[i].y = map->vector[i].y;
+		iso[i].z = map->vector[i].z;
 
 		scale(&iso[i], map->fac.scale);
-	//	translation_y(&iso[i], map->fac.translation_y);
-	//	translation_x(&iso[i], map->fac.translation_x);	
-		test_trans(map, &iso[i]);
-
+		translation(map, &iso[i]);
+		test_rotation_x(map, &iso[i]);
+		test_rotation_y(map, &iso[i]);
+		test_rotation_z(map, &iso[i]);
 		i++;
 	}
-	printf("\n\n\n\n\n\n\n\n\n" );
 	map->fac.altitude = 0;
 }
 
@@ -148,10 +206,8 @@ void	draw_map(t_mlx *map, int color)
 		}
 		img_put_pixel(map, iso[i].x, iso[i].y, color);
 		i++;
-		printf("12\n");
 	}
-	printf("someting\n");
-	//free(iso);
+	free(iso);
 }
 
 int		my_key_funct(int keycode, t_mlx *map)
@@ -187,6 +243,30 @@ int		my_key_funct(int keycode, t_mlx *map)
 	if (keycode == 125)
 	{
 		map->fac.translation_y += 15;
+	}
+	if (keycode == 20)
+	{
+		map->fac.rotation_x += 5;
+	}
+	if (keycode == 21)
+	{
+		map->fac.rotation_x -= 5;
+	}
+	if (keycode == 22)
+	{
+		map->fac.rotation_y +=5;
+	}
+	if (keycode == 23)
+	{
+		map->fac.rotation_y -=5;
+	}
+	if (keycode == 12)
+	{
+		map->fac.rotation_z +=5;
+	}
+	if (keycode == 13)
+	{
+		map->fac.rotation_z -=5;
 	}
 	if (keycode == 6)
 	{

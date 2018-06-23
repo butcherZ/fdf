@@ -2,3 +2,9 @@
 0 0 0 0
 0 0 0 0
 0 0 0 0
+
+1) Order the file map using the z: orderZArray
+2) When go in the loop where we draw all our point
+3) Using our orderZArray we calculate the point with an altitude (130/10) (each 13 pixels we change the color)
+
+we have to say to the drawline to draw a gradient using y

@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 17:50:33 by zyuan             #+#    #+#             */
-/*   Updated: 2018/06/22 19:36:41 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/06/23 23:03:56 by butcherz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #define degToRad(angleInDegrees) ((angleInDegrees) * M_PI / 180.0)
 #define radToDeg(angleInRadians) ((angleInRadians) * 180.0 / M_PI)
 
-typedef	double	MATRIX [3][3];
+typedef	double	MATRIX [4][4];
 typedef struct s_img
 {
 	void 		*img_ptr;
@@ -51,6 +51,7 @@ typedef struct	s_iso
 	float	x;
 	float	y;
 	float	z;
+	float	w;
 }		t_iso;
 
 typedef	struct s_fac
@@ -58,7 +59,11 @@ typedef	struct s_fac
 	int	scale;
 	int	translation_x;
 	int	translation_y;
+	int	translation_z;
 	int	altitude;
+	int	rotation_x;
+	int	rotation_y;
+	int	rotation_z;
 }		t_fac;
 
 typedef struct s_mlx
