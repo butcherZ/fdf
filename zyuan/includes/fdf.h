@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 17:50:33 by zyuan             #+#    #+#             */
-/*   Updated: 2018/06/23 23:03:56 by butcherz         ###   ########.fr       */
+/*   Updated: 2018/06/24 21:01:47 by butcherz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ typedef	struct	s_info
 	int		height;
 	int		width;
 	int		total;
+	int		min_z;
+	int		max_z;
+
 }		t_info;
 
 typedef struct	s_iso
