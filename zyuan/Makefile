@@ -6,7 +6,7 @@
 #    By: zyuan <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 19:48:50 by zyuan             #+#    #+#              #
-#    Updated: 2018/06/19 21:54:57 by butcherz         ###   ########.fr        #
+#    Updated: 2018/06/25 15:43:23 by zyuan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,13 @@ NAME = fdf
 #src / obj files
 SRC = main.c \
       read.c \
+	  matrices.c \
 
 OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 
 # compiler
 CC  = gcc
-CFLAGS  = -Wall -Wextra -g
+CFLAGS  = -Wall -Wextra -g3
 
 # mlx library
 MLX  = ./minilibx/

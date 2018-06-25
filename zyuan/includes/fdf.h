@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 17:50:33 by zyuan             #+#    #+#             */
-/*   Updated: 2018/06/24 21:01:47 by butcherz         ###   ########.fr       */
+/*   Updated: 2018/06/25 14:04:34 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,11 @@ typedef struct s_mlx
 	t_iso		iso;
 	t_fac		fac;
 }				t_mlx;
-
+void			scale(t_iso *iso, int factor);
+void			rotation_x(t_mlx *map, t_iso *iso);
+void			rotation_y(t_mlx *map, t_iso *iso);
+void			rotation_z(t_mlx *map, t_iso *iso);
+void			translation(t_mlx *map, t_iso *iso);
 void			init_image(t_mlx *mlx);
 void			img_put_pixel(t_mlx *mlx, int x, int y, int color);
 t_vector		*realloc_and_append_struct(t_vector *vectors, char **tab, t_info *info);
