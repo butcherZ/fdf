@@ -80,6 +80,8 @@ typedef struct s_mlx
 	int			y;
 	int			color;
 	char		*argv;
+	int         trigger;
+	int         index;
 	t_img		img;
 	t_vector	*vector;
 	t_vector	*origin;

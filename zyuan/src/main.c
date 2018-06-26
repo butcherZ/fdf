@@ -177,8 +177,8 @@ void 	reset(t_mlx *map)
 		map->fac.rotation_x = 0;
 		map->fac.rotation_y = 0;
 		map->fac.rotation_z = 0;
-		map->fac.translation_x = 570;
-		map->fac.translation_y = 420;
+		map->fac.translation_x = 500;
+		map->fac.translation_y = 450;
 		map->fac.scale = 20;
 }
 int		my_key_funct(int keycode, t_mlx *map)
@@ -252,14 +252,19 @@ int		my_key_funct(int keycode, t_mlx *map)
 	if (keycode == 50)
 	{
 		reset(map);
-		/*while(map->fac.rotation_y < 10)
+	}
+	if (keycode == 48)
+	{
+			map->trigger = (map->trigger + 1) % 2;
+			printf("%s %d\n", "Trigger is\n", map->trigger );
+/*		while(map->fac.rotation_y < 10)
 		{
 				map->fac.rotation_y++;
 				sleep(1);
 				empty(map);
 				draw_map(map, 0x0087CE);
 				mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 100, 100);
-				//mlx_destroy_image (map->mlx, map->img.img_ptr );
+
 			printf("y is %d\n", map->fac.rotation_y);
 		}*/
 	}
@@ -271,12 +276,44 @@ int		my_key_funct(int keycode, t_mlx *map)
 }
 void usage(t_mlx *map)
 {
-		mlx_string_put(map->mlx, map->win, 15, 8, 0xFFFFFF, "MAP PATH :");
-		mlx_string_put(map->mlx, map->win, 30, 30, 0xFF0000, map->argv);
-		mlx_string_put(map->mlx, map->win, 15, 52, 0xFFFFFF, "Usage :");
-		mlx_string_put(map->mlx, map->win, 30, 80, 0xFFFFFF, "Translate x/y axes");
-		mlx_string_put(map->mlx, map->win, 350, 80, 0xFFFFFF, "Arrow keys");
+		mlx_string_put(map->mlx, map->win, 30, 60, 0xFFFFFF, "Usage :");
+		mlx_string_put(map->mlx, map->win, 45, 90, 0xFFFFFF, "Translate x/y axes");
+		mlx_string_put(map->mlx, map->win, 350, 90, 0xFFFFFF, "Arrow keys");
+		mlx_string_put(map->mlx, map->win, 45, 120, 0xFFFFFF, "Roate x axis");
+		mlx_string_put(map->mlx, map->win, 350, 120, 0xFFFFFF, "Q W");
+		mlx_string_put(map->mlx, map->win, 45, 150, 0xFFFFFF, "Roate y axis");
+		mlx_string_put(map->mlx, map->win, 350, 150, 0xFFFFFF, "A S");
+		mlx_string_put(map->mlx, map->win, 45, 180, 0xFFFFFF, "Roate z axis");
+		mlx_string_put(map->mlx, map->win, 350, 180, 0xFFFFFF, "Z X");
+		mlx_string_put(map->mlx, map->win, 45, 210, 0xFFFFFF, "Zoom In/Out");
+		mlx_string_put(map->mlx, map->win, 350, 210, 0xFFFFFF, "1 2");
+		mlx_string_put(map->mlx, map->win, 45, 240, 0xFFFFFF, "Change altitude");
+		mlx_string_put(map->mlx, map->win, 350, 240, 0xFFFFFF, "3 4");
+		mlx_string_put(map->mlx, map->win, 45, 270, 0xFFFFFF, "Reset map");
+		mlx_string_put(map->mlx, map->win, 350, 270, 0xFFFFFF, "`");
+		mlx_string_put(map->mlx, map->win, 30, 370, 0xFFFFFF, "MAP PATH :");
+		mlx_string_put(map->mlx, map->win, 45, 400, 0x74ebd5, map->argv);
 }
+
+int mlx_while(t_mlx *map)
+{
+//	ft_putstr("test\n");
+	map->index += 1;
+//	printf("%d\n", map->index);
+	if (map->trigger == 1 && map->index > 200)
+	{
+			map->index = 0;
+			map->fac.rotation_y -= 2;
+			//sleep(0.1);
+			empty(map);
+			draw_map(map, 0x0087CE);
+			mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, WIN_WIDTH/4, 0);
+
+		printf("y is %d\n", map->fac.rotation_y);
+	}
+	return (0);
+}
+
 int main(int argc, char *argv[])
 {
 	t_mlx map;
@@ -287,6 +324,7 @@ int main(int argc, char *argv[])
 	fd = 0;
 	line = NULL;
 	map.fac.scale = 20;
+	map.index = 0;
 	if (argc != 2)
 	{
 		ft_putstr("wrong arguments numbers\n");
@@ -302,6 +340,7 @@ int main(int argc, char *argv[])
 		map.argv = argv[1];
 		free(line);
 	}
+	map.trigger = 0;
 	close(fd);
 	map.mlx = mlx_init();
 	map.win = mlx_new_window(map.mlx, WIN_WIDTH, WIN_HEIGHT, "is this shit working?");
@@ -310,6 +349,7 @@ int main(int argc, char *argv[])
 	mlx_key_hook(map.win, my_key_funct, &map);
 	draw_map(&map, 0x0087CE);
 	mlx_put_image_to_window(map.mlx, map.win, map.img.img_ptr, WIN_WIDTH/4, 0);
+	mlx_loop_hook(map.mlx, mlx_while, &map);
 	mlx_loop(map.mlx);
 	return (0);
 }
