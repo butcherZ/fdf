@@ -10,12 +10,12 @@ void	init_image(t_mlx *mlx)
 	int		byte_per_pixel;
 
 	byte_per_pixel = mlx->img.bits_per_pixel / 8;
-	mlx->img.img_ptr = mlx_new_image(mlx->mlx, WIN_WIDTH, WIN_HEIGHT);
+	mlx->img.img_ptr = mlx_new_image(mlx->mlx, IMG_WIDTH, IMG_HEIGHT);
 	mlx->img.addr = (int*)mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bits_per_pixel, &mlx->img.size_line, &mlx->img.endian);
 }
 void	img_put_pixel(t_mlx *mlx, int x, int y, int color)
 {
-	if((x > 0 && x < WIN_WIDTH) && (y > 0 && y < WIN_HEIGHT))
+	if((x > 0 && x < IMG_WIDTH) && (y > 0 && y < IMG_HEIGHT))
 		mlx->img.addr[y * (mlx->img.size_line / 4) + x] = color;
 	//printf("result is %d\n", y * 19 + x);
 }
@@ -24,7 +24,7 @@ void	empty(t_mlx *mlx)
 	int i;
 
 	i = 0;
-	while (i < WIN_HEIGHT * WIN_WIDTH)
+	while (i < IMG_HEIGHT * IMG_WIDTH)
 	{
 		mlx->img.addr[i] = 0;
 		i++;
@@ -164,15 +164,23 @@ void	draw_map(t_mlx *map, int color)
 		}
 		if (map->info.total - i > map->info.width)
 		{
-			draw_line((int)iso[i].x, (int)iso[i].y, (int)iso[i + map->info.width].x, (int)iso[i + map->info.width].y,map->vector[i].z, (int)map->vector[i + map->info.width].z, map);
+				draw_line((int)iso[i].x, (int)iso[i].y, (int)iso[i + map->info.width].x, (int)iso[i + map->info.width].y,map->vector[i].z, (int)map->vector[i + map->info.width].z, map);
 		}
-		printf("i is %d, x is %f, y is %f\n, ==z==is %f\n", i, iso[i].x, iso[i].y, map->vector[i].z);
+		//printf("i is %d, x is %f, y is %f\n, ==z==is %f\n", i, iso[i].x, iso[i].y, map->vector[i].z);
 		img_put_pixel(map, iso[i].x, iso[i].y, color);
 		i++;
 	}
 	free(iso);
 }
-
+void 	reset(t_mlx *map)
+{
+		map->fac.rotation_x = 0;
+		map->fac.rotation_y = 0;
+		map->fac.rotation_z = 0;
+		map->fac.translation_x = 570;
+		map->fac.translation_y = 420;
+		map->fac.scale = 20;
+}
 int		my_key_funct(int keycode, t_mlx *map)
 {
 	printf("key event %d\n", keycode);
@@ -193,6 +201,7 @@ int		my_key_funct(int keycode, t_mlx *map)
 	}
 	if (keycode == 124)
 	{
+		printf("x is %d\n", map->fac.translation_x);
 		map->fac.translation_x += 30;
 	}
 	if (keycode == 123)
@@ -205,60 +214,69 @@ int		my_key_funct(int keycode, t_mlx *map)
 	}
 	if (keycode == 125)
 	{
+		printf("y is %d\n", map->fac.translation_y);
 		map->fac.translation_y += 30;
-	}
-	if (keycode == 20)
-	{
-		map->fac.rotation_x += 5;
-	}
-	if (keycode == 21)
-	{
-		map->fac.rotation_x -= 5;
-	}
-	if (keycode == 22)
-	{
-		map->fac.rotation_y += 5;
-	}
-	if (keycode == 23)
-	{
-		map->fac.rotation_y -= 5;
 	}
 	if (keycode == 12)
 	{
-		map->fac.rotation_z += 5;
+		map->fac.rotation_x += 5;
 	}
 	if (keycode == 13)
 	{
-		map->fac.rotation_z -= 5;
+		map->fac.rotation_x -= 5;
+	}
+	if (keycode == 0)
+	{
+		map->fac.rotation_y += 5;
+	}
+	if (keycode == 1)
+	{
+		map->fac.rotation_y -= 5;
 	}
 	if (keycode == 6)
 	{
-		map->fac.altitude = 1;
+		map->fac.rotation_z += 5;
 	}
 	if (keycode == 7)
 	{
+		map->fac.rotation_z -= 5;
+	}
+	if (keycode == 20)
+	{
+		map->fac.altitude = 1;
+	}
+	if (keycode == 21)
+	{
 		map->fac.altitude = 2;
 	}
-	if (keycode == 10)
+	if (keycode == 50)
 	{
-
-		while(map->fac.rotation_y < 10)
+		reset(map);
+		/*while(map->fac.rotation_y < 10)
 		{
 				map->fac.rotation_y++;
 				sleep(1);
 				empty(map);
 				draw_map(map, 0x0087CE);
 				mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 100, 100);
+				//mlx_destroy_image (map->mlx, map->img.img_ptr );
 			printf("y is %d\n", map->fac.rotation_y);
-		}
+		}*/
 	}
 	empty(map);
 	draw_map(map, 0x0087CE);
-	//mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 0, 0);
+	mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, WIN_WIDTH/4, 0);
 
 	return (1);
 }
-
+void usage(t_mlx *map)
+{
+		mlx_string_put(map->mlx, map->win, 15, 8, 0xFFFFFF, "MAP PATH :");
+		mlx_string_put(map->mlx, map->win, 30, 30, 0xFF0000, map->argv);
+		mlx_string_put(map->mlx, map->win, 15, 52, 0xFFFFFF, "Usage :");
+		mlx_string_put(map->mlx, map->win, 30, 80, 0xFFFFFF, "Translate x/y axes");
+		mlx_string_put(map->mlx, map->win, 350, 80, 0xFFFFFF, "Arrow keys");
+}
 int main(int argc, char *argv[])
 {
 	t_mlx map;
@@ -281,15 +299,17 @@ int main(int argc, char *argv[])
 			return (-1);
 		map.vector = parse_file(fd, &line, &info);
 		map.info = info;
+		map.argv = argv[1];
 		free(line);
 	}
 	close(fd);
 	map.mlx = mlx_init();
-	map.win = mlx_new_window(map.mlx, 1024, 768, "is this shit working?");
+	map.win = mlx_new_window(map.mlx, WIN_WIDTH, WIN_HEIGHT, "is this shit working?");
+	usage(&map);
 	init_image(&map);
 	mlx_key_hook(map.win, my_key_funct, &map);
 	draw_map(&map, 0x0087CE);
-	//mlx_put_image_to_window(map.mlx, map.win, map.img.img_ptr, 0, 0);
+	mlx_put_image_to_window(map.mlx, map.win, map.img.img_ptr, WIN_WIDTH/4, 0);
 	mlx_loop(map.mlx);
 	return (0);
 }

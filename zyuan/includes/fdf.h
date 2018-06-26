@@ -16,8 +16,11 @@
 # include <math.h>
 # include "../minilibx/mlx.h"
 
-#define WIN_WIDTH 1024
-#define WIN_HEIGHT 768
+#define WIN_WIDTH	2000
+#define WIN_HEIGHT 	1000
+
+#define IMG_WIDTH  (WIN_WIDTH - 300)
+#define IMG_HEIGHT  WIN_HEIGHT
 
 #define degToRad(angleInDegrees) ((angleInDegrees) * M_PI / 180.0)
 #define radToDeg(angleInRadians) ((angleInRadians) * 180.0 / M_PI)
@@ -76,6 +79,7 @@ typedef struct s_mlx
 	int			x;
 	int			y;
 	int			color;
+	char		*argv;
 	t_img		img;
 	t_vector	*vector;
 	t_vector	*origin;
