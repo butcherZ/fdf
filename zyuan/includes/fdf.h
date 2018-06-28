@@ -49,6 +49,7 @@ typedef	struct	s_info
 	int		total;
 	int		min_z;
 	int		max_z;
+	int		range_z;
 
 }		t_info;
 
@@ -95,6 +96,13 @@ void			rotation_y(t_mlx *map, t_iso *iso);
 void			rotation_z(t_mlx *map, t_iso *iso);
 void			translation(t_mlx *map, t_iso *iso);
 void			init_image(t_mlx *mlx);
+void			key_rotation(int keycode, t_mlx *map);
+void 			key_translation(int keycode, t_mlx *map);
+int				key_long_press(int keycode, t_mlx *map);
+int				key_down(int keycode, t_mlx *map);
+void			empty(t_mlx *mlx);
+void			draw_map(t_mlx *map);
+void 			reset(t_mlx *map);
 void			img_put_pixel(t_mlx *mlx, int x, int y, int color);
 t_vector		*realloc_and_append_struct(t_vector *vectors, char **tab, t_info *info);
 t_vector		*parse_file(int fd, char **line, t_info *info);

@@ -52,7 +52,8 @@ void	get_z(t_mlx *map)
 		i++;
 		j++;
 	}
-	printf("min is %d, max is %d\n", map->info.max_z, map->info.min_z);
+	map->info.range_z = abs(map->info.max_z - map->info.min_z);
+	//printf("min is %d, max is %d\n range is %d\n", map->info.max_z, map->info.min_z, map->info.range_z);
 }
 
 void	altitude_plus(t_vector *vec, t_mlx *map)
@@ -65,6 +66,7 @@ void	altitude_plus(t_vector *vec, t_mlx *map)
 		vec->z = -1;
 	if (map->fac.altitude == 1 && vec->z == 0)
 		vec->z = 1;
+	printf("altitude is %f\n", vec->z);
 }
 
 
@@ -92,7 +94,7 @@ void	cart_to_iso(t_mlx *map, t_iso *iso)
 			altitude_plus(&map->vector[i], map);
 		}
 
-	/*	iso[i].x = ((map->vector[i].x * cos(degToRad(angle))
+		/*iso[i].x = ((map->vector[i].x * cos(degToRad(angle))
 		+ map->vector[i].y * cos(degToRad(angle + 120))
 		+ (map->vector[i].z) * cos(degToRad(angle - 120))));
 
@@ -117,33 +119,56 @@ void	cart_to_iso(t_mlx *map, t_iso *iso)
 	map->fac.altitude = 0;
 }
 
-void	draw_line(int x0, int y0, int x1, int y1, int z1, int z2, t_mlx *map)
+void	draw_line(t_vector *vect0, t_vector *vect1, t_mlx *map)
 {
-	int dx = abs(x1-x0), sx = x0<x1 ? 1 : -1;
-	int dy = abs(y1-y0), sy = y0<y1 ? 1 : -1;
+	int dx = abs(vect1->x - vect0->x), sx = vect0->x < vect1->x ? 1 : -1;
+	int dy = abs(vect1->y - vect0->y), sy = vect0->y < vect1->y ? 1 : -1;
 	int err = (dx>dy ? dx : -dy)/2, e2;
 
 	while(1){
-		if(z1 != map->info.max_z || z1 != z2)
+
+	/*	if (vect0-> z >= 0 && vect0->z <= 3 && vect1-> z >= 0 && vect1->z <= 3)
+			img_put_pixel(map, vect0->x, vect0->y, 0x6dd5ed);
+		if (vect0-> z >= 3 && vect0->z <= 5 && vect1-> z >= 3 && vect1->z <= 5)
+			img_put_pixel(map, vect0->x, vect0->y, 0x4286f4);
+		if (vect0-> z >= 6 && vect0->z <= 8 && vect1-> z >= 6 && vect1->z <= 8)
+			img_put_pixel(map, vect0->x, vect0->y, 0x7F7FD5);
+		else
+			img_put_pixel(map, vect0->x, vect0->y, 0xFFFFFF);*/
+		if(vect0->z != map->info.max_z || vect0->z != vect1->z)
 		{
-			if (z1 > map->info.max_z / 2 && z2 > map->info.max_z / 2 )
-				img_put_pixel(map, x0, y0,0x6dd5ed);
+			if (vect0->z > map->info.max_z / 2 && vect1->z > map->info.max_z / 2)
+			{
+				img_put_pixel(map, vect0->x, vect0->y, 0x6dd5ed); //top
+			}
 			else
-				img_put_pixel(map, x0, y0,0x4286f4);
+				img_put_pixel(map, vect0->x, vect0->y, 0x4286f4); //blue, z
 		}
 		else
-				img_put_pixel(map, x0, y0,0x7F7FD5);
-		if (x0==x1 && y0==y1) break;
+				img_put_pixel(map, vect0->x, vect0->y, 0x7F7FD5); //purple
+		if (vect0->x == vect1->x && vect0->y == vect1->y) break;
 		e2 = err;
-		if (e2 >-dx) { err -= dy; x0 += sx; }
-		if (e2 < dy) { err += dx; y0 += sy; }
+		if (e2 >-dx) { err -= dy; vect0->x += sx; }
+		if (e2 < dy) { err += dx; vect0->y += sy; }
 	}
 }
 
-void	draw_map(t_mlx *map, int color)
+t_vector new_vector(int x, int y, int z)
+{
+	t_vector vector;
+
+	vector.x = x;
+	vector.y = y;
+	vector.z = z;
+	return vector;
+}
+
+void	draw_map(t_mlx *map)
 {
 	int	i;
 	t_iso	*iso;
+	t_vector vect0;
+	t_vector vect1;
 	i = 0;
 
 	iso = malloc(sizeof(t_iso) * map->info.total) ;
@@ -160,14 +185,17 @@ void	draw_map(t_mlx *map, int color)
 //		printf("=======(i) is %d\n,iso x is %f\n, iso y is %f\n=======", i, iso[i].x, iso[i].y);
 		if (i % map->info.width != map->info.width - 1)
 		{
-				draw_line((int)iso[i].x, (int)iso[i].y, (int)iso[i + 1].x, (int)iso[i + 1].y, (int)map->vector[i].z, (int)map->vector[i + 1].z, map);
+				vect0 = new_vector((int)iso[i].x, (int)iso[i].y, (int)map->vector[i].z);
+				vect1 = new_vector( (int)iso[i + 1].x, (int)iso[i + 1].y, (int)map->vector[i + 1].z);
+				draw_line(&vect0, &vect1, map);
 		}
 		if (map->info.total - i > map->info.width)
 		{
-				draw_line((int)iso[i].x, (int)iso[i].y, (int)iso[i + map->info.width].x, (int)iso[i + map->info.width].y,map->vector[i].z, (int)map->vector[i + map->info.width].z, map);
+				vect0 = new_vector((int)iso[i].x, (int)iso[i].y, map->vector[i].z);
+				vect1 = new_vector( (int)iso[i + map->info.width].x, (int)iso[i + map->info.width].y, (int)map->vector[i + map->info.width].z);
+				draw_line(&vect0, &vect1, map);
 		}
-		//printf("i is %d, x is %f, y is %f\n, ==z==is %f\n", i, iso[i].x, iso[i].y, map->vector[i].z);
-		img_put_pixel(map, iso[i].x, iso[i].y, color);
+	//	printf("i is %d, x is %f, y is %f\n, ==z==is %f\n", i, iso[i].x, iso[i].y, iso[i].z);
 		i++;
 	}
 	free(iso);
@@ -181,99 +209,7 @@ void 	reset(t_mlx *map)
 		map->fac.translation_y = 450;
 		map->fac.scale = 20;
 }
-int		my_key_funct(int keycode, t_mlx *map)
-{
-	printf("key event %d\n", keycode);
 
-	if (keycode == 53)
-	{
-		printf("you are pressing ESC\n");
-		mlx_destroy_window (map->mlx, map->win);
-		exit(1);
-	}
-	if (keycode == 18)
-	{
-		map->fac.scale++;
-	}
-	if (keycode == 19)
-	{
-		map->fac.scale--;
-	}
-	if (keycode == 124)
-	{
-		printf("x is %d\n", map->fac.translation_x);
-		map->fac.translation_x += 30;
-	}
-	if (keycode == 123)
-	{
-		map->fac.translation_x -= 30;
-	}
-	if (keycode == 126)
-	{
-		map->fac.translation_y -= 30;
-	}
-	if (keycode == 125)
-	{
-		printf("y is %d\n", map->fac.translation_y);
-		map->fac.translation_y += 30;
-	}
-	if (keycode == 12)
-	{
-		map->fac.rotation_x += 5;
-	}
-	if (keycode == 13)
-	{
-		map->fac.rotation_x -= 5;
-	}
-	if (keycode == 0)
-	{
-		map->fac.rotation_y += 5;
-	}
-	if (keycode == 1)
-	{
-		map->fac.rotation_y -= 5;
-	}
-	if (keycode == 6)
-	{
-		map->fac.rotation_z += 5;
-	}
-	if (keycode == 7)
-	{
-		map->fac.rotation_z -= 5;
-	}
-	if (keycode == 20)
-	{
-		map->fac.altitude = 1;
-	}
-	if (keycode == 21)
-	{
-		map->fac.altitude = 2;
-	}
-	if (keycode == 50)
-	{
-		reset(map);
-	}
-	if (keycode == 48)
-	{
-			map->trigger = (map->trigger + 1) % 2;
-			printf("%s %d\n", "Trigger is\n", map->trigger );
-/*		while(map->fac.rotation_y < 10)
-		{
-				map->fac.rotation_y++;
-				sleep(1);
-				empty(map);
-				draw_map(map, 0x0087CE);
-				mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, 100, 100);
-
-			printf("y is %d\n", map->fac.rotation_y);
-		}*/
-	}
-	empty(map);
-	draw_map(map, 0x0087CE);
-	mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, WIN_WIDTH/4, 0);
-
-	return (1);
-}
 void usage(t_mlx *map)
 {
 		mlx_string_put(map->mlx, map->win, 30, 60, 0xFFFFFF, "Usage :");
@@ -291,6 +227,8 @@ void usage(t_mlx *map)
 		mlx_string_put(map->mlx, map->win, 350, 240, 0xFFFFFF, "3 4");
 		mlx_string_put(map->mlx, map->win, 45, 270, 0xFFFFFF, "Reset map");
 		mlx_string_put(map->mlx, map->win, 350, 270, 0xFFFFFF, "`");
+		mlx_string_put(map->mlx, map->win, 45, 300, 0xFFFFFF, "Active/Stop Animation");
+		mlx_string_put(map->mlx, map->win, 350, 300, 0xFFFFFF, "tab");
 		mlx_string_put(map->mlx, map->win, 30, 370, 0xFFFFFF, "MAP PATH :");
 		mlx_string_put(map->mlx, map->win, 45, 400, 0x74ebd5, map->argv);
 }
@@ -304,9 +242,11 @@ int mlx_while(t_mlx *map)
 	{
 			map->index = 0;
 			map->fac.rotation_y -= 2;
+			if (map->fac.rotation_y <= -360)
+				map->fac.rotation_y = 0;
 			//sleep(0.1);
 			empty(map);
-			draw_map(map, 0x0087CE);
+			draw_map(map);
 			mlx_put_image_to_window(map->mlx, map->win, map->img.img_ptr, WIN_WIDTH/4, 0);
 
 		printf("y is %d\n", map->fac.rotation_y);
@@ -338,7 +278,7 @@ int main(int argc, char *argv[])
 		map.vector = parse_file(fd, &line, &info);
 		map.info = info;
 		map.argv = argv[1];
-		free(line);
+		//free(line);
 	}
 	map.trigger = 0;
 	close(fd);
@@ -346,8 +286,9 @@ int main(int argc, char *argv[])
 	map.win = mlx_new_window(map.mlx, WIN_WIDTH, WIN_HEIGHT, "is this shit working?");
 	usage(&map);
 	init_image(&map);
-	mlx_key_hook(map.win, my_key_funct, &map);
-	draw_map(&map, 0x0087CE);
+	mlx_key_hook(map.win, key_down, &map);
+	mlx_hook(map.win, 2, 0, key_long_press, &map);
+	draw_map(&map);
 	mlx_put_image_to_window(map.mlx, map.win, map.img.img_ptr, WIN_WIDTH/4, 0);
 	mlx_loop_hook(map.mlx, mlx_while, &map);
 	mlx_loop(map.mlx);

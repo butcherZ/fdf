@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matrices.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/06/26 15:17:27 by zyuan             #+#    #+#             */
+/*   Updated: 2018/06/26 15:24:17 by zyuan            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mlx.h"
 #include "fdf.h"
 #include "../libft/libft.h"
@@ -5,19 +17,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-void	scale(t_iso *iso, int factor)
+void		scale(t_iso *iso, int factor)
 {
-	iso->x = iso->x * factor;
-	iso->y = iso->y * factor;
+			iso->x = iso->x * factor;
+			iso->y = iso->y * factor;
 }
-void	rotation_x(t_mlx *map, t_iso *iso)
+void		rotation_x(t_mlx *map, t_iso *iso)
 {
-		MATRIX m;
+			MATRIX m;
 
-		m[0][0] = 1.0;   m[0][1] = 0.0;  m[0][2] = 0.0; m[0][3] = 0.0;
-		m[1][0] = 0.0;   m[1][1] = cos(degToRad(map->fac.rotation_x));  m[1][2] = -sin(degToRad(map->fac.rotation_x)); m[1][3] = 0;
-		m[2][0] = 0.0;	 m[2][1] = sin(degToRad(map->fac.rotation_x));  m[2][2] = cos(degToRad(map->fac.rotation_x));	m[2][3] = 1.0;
-		m[3][0] = 0.0;	 m[3][1] = 0.0;  m[3][2] = 0.0; m[3][3] = 1.0;
+			m[0][0] = 1.0;   m[0][1] = 0.0;  m[0][2] = 0.0; m[0][3] = 0.0;
+			m[1][0] = 0.0;   m[1][1] = cos(degToRad(map->fac.rotation_x));  m[1][2] = -sin(degToRad(map->fac.rotation_x)); m[1][3] = 0;
+			m[2][0] = 0.0;	 m[2][1] = sin(degToRad(map->fac.rotation_x));  m[2][2] = cos(degToRad(map->fac.rotation_x));	m[2][3] = 1.0;
+			m[3][0] = 0.0;	 m[3][1] = 0.0;  m[3][2] = 0.0; m[3][3] = 1.0;
 
 		int transformedX, transformedY, transformedZ;
 

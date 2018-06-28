@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:52:26 by zyuan             #+#    #+#             */
-/*   Updated: 2018/06/11 20:36:03 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/06/22 18:20:26 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,19 @@
 /* don't forget to handle file errors!
 And color hexadecimal
 */
+void free_tab(char **tab, t_info *info)
+{
+	int		i;
+
+	i = 0;
+	while (i < info->width + 1)
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
 t_vector	*realloc_and_append_struct(t_vector *vectors, char **tab, t_info *info)
 {
 	int i;
@@ -36,12 +49,12 @@ t_vector	*realloc_and_append_struct(t_vector *vectors, char **tab, t_info *info)
 	free(vectors);
 	return (new_vector);
 }
-
+// 2,030 (1,600 direct, 430 indirect) bytes in 10 blocks are definitely lost in loss record 517 of 528
 t_vector	*parse_file(int fd, char **line, t_info *info)
 {
 		char	**tab;
 		t_vector	*vector;
-	
+
 		info->total = 0;
 		info->height = 0;
 		if (!(vector = (t_vector *)malloc(sizeof(t_vector) * 1)))
@@ -60,7 +73,10 @@ t_vector	*parse_file(int fd, char **line, t_info *info)
 				}
 			}
 			info->height++;
-			printf("width is %d, height is %d, total is %d\n", info->width, info->height, info->total);
+			free_tab(tab, info);
+			free(*line);
+			//printf("width is %d, height is %d, total is %d\n", info->width, info->height, info->total);
 		}
+
 	return (vector);
 }

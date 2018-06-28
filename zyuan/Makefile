@@ -6,7 +6,7 @@
 #    By: zyuan <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 19:48:50 by zyuan             #+#    #+#              #
-#    Updated: 2018/06/25 15:43:23 by zyuan            ###   ########.fr        #
+#    Updated: 2018/06/28 20:03:52 by zyuan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ NAME = fdf
 SRC = main.c \
       read.c \
 	  matrices.c \
+	  key_functions.c
 
 OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 
