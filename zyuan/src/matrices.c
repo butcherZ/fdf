@@ -21,15 +21,28 @@ void		scale(t_iso *iso, int factor)
 {
 			iso->x = iso->x * factor;
 			iso->y = iso->y * factor;
+			iso->z = iso->z * factor;
 }
 void		rotation_x(t_mlx *map, t_iso *iso)
 {
 			MATRIX m;
 
-			m[0][0] = 1.0;   m[0][1] = 0.0;  m[0][2] = 0.0; m[0][3] = 0.0;
-			m[1][0] = 0.0;   m[1][1] = cos(degToRad(map->fac.rotation_x));  m[1][2] = -sin(degToRad(map->fac.rotation_x)); m[1][3] = 0;
-			m[2][0] = 0.0;	 m[2][1] = sin(degToRad(map->fac.rotation_x));  m[2][2] = cos(degToRad(map->fac.rotation_x));	m[2][3] = 1.0;
-			m[3][0] = 0.0;	 m[3][1] = 0.0;  m[3][2] = 0.0; m[3][3] = 1.0;
+			m[0][0] = 1.0;
+			m[0][1] = 0.0;
+			m[0][2] = 0.0;
+			m[0][3] = 0.0;
+			m[1][0] = 0.0;
+			m[1][1] = cos(degToRad(map->fac.rotation_x));
+			m[1][2] = -sin(degToRad(map->fac.rotation_x));
+			m[1][3] = 0;
+			m[2][0] = 0.0;
+		 	m[2][1] = sin(degToRad(map->fac.rotation_x));
+			m[2][2] = cos(degToRad(map->fac.rotation_x));
+			m[2][3] = 1.0;
+			m[3][0] = 0.0;
+			m[3][1] = 0.0;
+			m[3][2] = 0.0;
+			m[3][3] = 1.0;
 
 		int transformedX, transformedY, transformedZ;
 

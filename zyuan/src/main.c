@@ -175,13 +175,13 @@ void	draw_map(t_mlx *map)
 	cart_to_iso(map, iso);
 	while (i < map->info.total)
 	{
-		/*if (map->vector[i].z != 0)
-		{
-			color = 0xFF0000;
-			printf("iso x is %f\niso y is %f\n", iso[i].x, iso[i].y);
-		}
-		else
-			color = 0xFFFFFF;*/
+		// if (map->vector[i].z != 0)
+		// {
+		// 	color = 0xFF0000;
+		// 	printf("iso x is %f\niso y is %f\n", iso[i].x, iso[i].y);
+		// }
+		// else
+		// 	color = 0xFFFFFF;
 //		printf("=======(i) is %d\n,iso x is %f\n, iso y is %f\n=======", i, iso[i].x, iso[i].y);
 		if (i % map->info.width != map->info.width - 1)
 		{
@@ -263,7 +263,7 @@ int main(int argc, char *argv[])
 
 	fd = 0;
 	line = NULL;
-	map.fac.scale = 20;
+	map.fac.scale = 1;
 	map.index = 0;
 	if (argc != 2)
 	{

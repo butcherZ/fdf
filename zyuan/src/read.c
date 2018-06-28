@@ -49,7 +49,7 @@ t_vector	*realloc_and_append_struct(t_vector *vectors, char **tab, t_info *info)
 	free(vectors);
 	return (new_vector);
 }
-// 2,030 (1,600 direct, 430 indirect) bytes in 10 blocks are definitely lost in loss record 517 of 528
+
 t_vector	*parse_file(int fd, char **line, t_info *info)
 {
 		char	**tab;
