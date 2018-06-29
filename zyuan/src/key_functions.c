@@ -93,7 +93,7 @@ int		key_down(int keycode, t_mlx *map)
 		exit(1);
 	}
 
-	if (keycode == 50)
+	if (keycode == 10)
 	{
 		reset(map);
 	}

@@ -88,6 +88,12 @@ typedef	struct	s_line
 	int			err;
 	int			err2;
 }				t_line;
+
+typedef	struct s_matrix
+{
+	double 	value[4][4];
+}					t_matrix;
+
 typedef struct s_mlx
 {
 	void		*mlx;
@@ -96,8 +102,8 @@ typedef struct s_mlx
 	int			y;
 	int			color;
 	char		*argv;
-	int         trigger;
-	int         index;
+	int     trigger;
+	int     index;
 	t_img		img;
 	t_vector	*vector;
 	t_vector	*origin;
@@ -106,13 +112,26 @@ typedef struct s_mlx
 	t_fac		fac;
 	t_line		line;
 }				t_mlx;
+
+void	get_z(t_mlx *map);
+void	altitude_plus(t_vector *vec, t_mlx *map);
+
+t_matrix 	rotation_x_matrix(t_mlx *map);
+t_matrix	rotation_y_matrix(t_mlx *map);
+t_matrix 	rotation_z_matrix(t_mlx *map);
+t_matrix 	translation_matrix(t_mlx *map);
+
 void			scale(t_iso *iso, int factor);
 void			rotation_x(t_mlx *map, t_iso *iso);
 void			rotation_y(t_mlx *map, t_iso *iso);
 void			rotation_z(t_mlx *map, t_iso *iso);
 void			translation(t_mlx *map, t_iso *iso);
+
 void			init_image(t_mlx *mlx);
+void 			iso_reduction(t_iso *iso, int x, int y);
+void			iso_augmentation(t_iso *iso, int x, int y);
 t_vector 		new_vector(int x, int y, int z);
+
 t_line			init_line(t_vector *vect0, t_vector *vect1);
 void			draw_line(t_vector *vect0, t_vector *vect1, t_mlx *map);
 void 			draw_horizontal_line(t_iso *iso, t_mlx *map, int i);

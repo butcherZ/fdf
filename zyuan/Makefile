@@ -20,6 +20,8 @@ SRC = main.c \
 	  matrices.c \
 	  key_functions.c \
 	  render_image.c \
+		init_matrices.c \
+		change_altitude.c \
 
 OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 

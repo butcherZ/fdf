@@ -25,93 +25,45 @@ void		scale(t_iso *iso, int factor)
 }
 void		rotation_x(t_mlx *map, t_iso *iso)
 {
-			MATRIX m;
+			t_matrix m;
 
-			m[0][0] = 1.0;
-			m[0][1] = 0.0;
-			m[0][2] = 0.0;
-			m[0][3] = 0.0;
-			m[1][0] = 0.0;
-			m[1][1] = cos(degToRad(map->fac.rotation_x));
-			m[1][2] = -sin(degToRad(map->fac.rotation_x));
-			m[1][3] = 0;
-			m[2][0] = 0.0;
-		 	m[2][1] = sin(degToRad(map->fac.rotation_x));
-			m[2][2] = cos(degToRad(map->fac.rotation_x));
-			m[2][3] = 1.0;
-			m[3][0] = 0.0;
-			m[3][1] = 0.0;
-			m[3][2] = 0.0;
-			m[3][3] = 1.0;
+			m = rotation_x_matrix(map);
 
-		int transformedX, transformedY, transformedZ;
-
-		transformedX = (int) (iso->x * m[0][0] + iso->y * m[0][1] + iso->z * m[0][2] + m[0][3]);
-		transformedY = (int) (iso->x * m[1][0] + iso->y * m[1][1] + iso->z * m[1][2] + m[1][3]);
-		transformedZ = (int) (iso->x * m[2][0] + iso->y * m[2][2] + iso->z * m[2][2] + m[2][3]);
-
-		iso->x = transformedX;
-		iso->y = transformedY;
-		iso->z = transformedZ;
+			iso->x = (int) (iso->x * m.value[0][0] + iso->y * m.value[0][1] + iso->z * m.value[0][2] + m.value[0][3]);
+			iso->y = (int) (iso->x * m.value[1][0] + iso->y * m.value[1][1] + iso->z * m.value[1][2] + m.value[1][3]);
+			iso->z = (int) (iso->x * m.value[2][0] + iso->y * m.value[2][2] + iso->z * m.value[2][2] + m.value[2][3]);
 
 }
 
 void	rotation_y(t_mlx *map, t_iso *iso)
 {
-		MATRIX m;
+		t_matrix m;
 
-		m[0][0] = cos(degToRad(map->fac.rotation_y));   m[0][1] = 0.0;  m[0][2] = sin(degToRad(map->fac.rotation_y)); m[0][3] = 0.0;
-		m[1][0] = 0.0;   m[1][1] = 1.0;  m[1][2] = 0.0; m[1][3] = 0.0;
-		m[2][0] = -sin(degToRad(map->fac.rotation_y));	 m[2][1] = 0.0;  m[2][2] = cos(degToRad(map->fac.rotation_y));	m[2][3] = 1.0;
-		m[3][0] = 0.0;	 m[3][1] = 0.0;  m[3][2] = 0.0; m[3][3] = 1.0;
+		m = rotation_y_matrix(map);
 
-		int transformedX, transformedY, transformedZ;
-
-		transformedX = (int) (iso->x * m[0][0] + iso->y * m[0][1] + iso->z * m[0][2] + m[0][3]);
-		transformedY = (int) (iso->x * m[1][0] + iso->y * m[1][1] + iso->z * m[1][2] + m[1][3]);
-		transformedZ = (int) (iso->x * m[2][0] + iso->y * m[2][2] + iso->z * m[2][2] + m[2][3]);
-
-		iso->x = transformedX;
-		iso->y = transformedY;
-		iso->z = transformedZ;
-
+		iso->x = (int) (iso->x * m.value[0][0] + iso->y * m.value[0][1] + iso->z * m.value[0][2] + m.value[0][3]);
+		iso->y = (int) (iso->x * m.value[1][0] + iso->y * m.value[1][1] + iso->z * m.value[1][2] + m.value[1][3]);
+		iso->z = (int) (iso->x * m.value[2][0] + iso->y * m.value[2][2] + iso->z * m.value[2][2] + m.value[2][3]);
 }
 void	rotation_z(t_mlx *map, t_iso *iso)
 {
-		MATRIX m;
-		m[0][0] = cos(degToRad(map->fac.rotation_z));   m[0][1] = -sin(degToRad(map->fac.rotation_z));  m[0][2] = 0.0; m[0][3] = 0.0;
-		m[1][0] = sin(degToRad(map->fac.rotation_z));  m[1][1] = cos(degToRad(map->fac.rotation_z));;  m[1][2] = 0.0; m[1][3] = 0.0;
-		m[2][0] = 0.0;	 m[2][1] = 0.0;  m[2][2] = 0.0; m[2][3] = 1.0;
-		m[3][0] = 0.0;	 m[3][1] = 0.0;  m[3][2] = 0.0; m[3][3] = 1.0;
+		t_matrix m;
 
-		int transformedX, transformedY, transformedZ;
+		m = rotation_z_matrix(map);
 
-		transformedX = (int) (iso->x * m[0][0] + iso->y * m[0][1] + iso->z * m[0][2] + m[0][3]);
-		transformedY = (int) (iso->x * m[1][0] + iso->y * m[1][1] + iso->z * m[1][2] + m[1][3]);
-		transformedZ = (int) (iso->x * m[2][0] + iso->y * m[2][2] + iso->z * m[2][2] + m[2][3]);
-
-		iso->x = transformedX;
-		iso->y = transformedY;
-		iso->z = transformedZ;
-
+		iso->x = (int) (iso->x * m.value[0][0] + iso->y * m.value[0][1] + iso->z * m.value[0][2] + m.value[0][3]);
+		iso->y = (int) (iso->x * m.value[1][0] + iso->y * m.value[1][1] + iso->z * m.value[1][2] + m.value[1][3]);
+		iso->z = (int) (iso->x * m.value[2][0] + iso->y * m.value[2][2] + iso->z * m.value[2][2] + m.value[2][3]);
 }
 
 void	translation(t_mlx *map, t_iso *iso)
 {
-		MATRIX m;
-		m[0][0] = 1.0;   m[0][1] = 0.0;  m[0][2] = 0.0; m[0][3] = map->fac.translation_x;
-		m[1][0] = 0.0;   m[1][1] = 1.0;  m[1][2] = 0.0; m[1][3] = map->fac.translation_y;
-		m[2][0] = 0.0;	 m[2][1] = 0.0;  m[2][2] = 1.0;	m[2][3] = map->fac.translation_z;
-		m[3][0] = 0.0;	 m[3][1] = 0.0;  m[3][2] = 0.0; m[3][3] = 1;
+	t_matrix m;
 
-		int transformedX, transformedY, transformedZ;
+	m = translation_matrix(map);
 
-		transformedX = (int) (iso->x * m[0][0] + iso->y * m[0][1] + iso->z * m[0][2] + m[0][3]);
-		transformedY = (int) (iso->x * m[1][0] + iso->y * m[1][1] + iso->z * m[1][2] + m[1][3]);
-		transformedZ = (int) (iso->x * m[2][0] + iso->y * m[2][2] + iso->z * m[2][2] + m[2][3]);
-
-		iso->x = transformedX;
-		iso->y = transformedY;
-		iso->z = transformedZ;
+	iso->x = (int) (iso->x * m.value[0][0] + iso->y * m.value[0][1] + iso->z * m.value[0][2] + m.value[0][3]);
+	iso->y = (int) (iso->x * m.value[1][0] + iso->y * m.value[1][1] + iso->z * m.value[1][2] + m.value[1][3]);
+	iso->z = (int) (iso->x * m.value[2][0] + iso->y * m.value[2][2] + iso->z * m.value[2][2] + m.value[2][3]);
 
 }

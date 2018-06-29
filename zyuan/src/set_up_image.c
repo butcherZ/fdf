@@ -52,3 +52,15 @@ void		empty(t_mlx *mlx)
 		i++;
 	}
 }
+
+void	iso_reduction(t_iso *iso, int x, int y)
+{
+	iso->x -= x/2;
+	iso->y -= y/2;
+}
+
+void	iso_augmentation(t_iso *iso, int x, int y)
+{
+	iso->x -= x/2;
+	iso->y -= y/2;
+}
