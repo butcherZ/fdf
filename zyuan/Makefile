@@ -15,8 +15,11 @@ NAME = fdf
 #src / obj files
 SRC = main.c \
       read.c \
+	  set_up_image.c \
+	  draw_line.c \
 	  matrices.c \
-	  key_functions.c
+	  key_functions.c \
+	  render_image.c \
 
 OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 

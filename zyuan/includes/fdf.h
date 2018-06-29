@@ -73,6 +73,21 @@ typedef	struct s_fac
 	int	rotation_z;
 }		t_fac;
 
+typedef	struct	s_line
+{
+	int			x0;
+	int			x1;
+	int			y0;
+	int			y1;
+	int			z0;
+	int			z1;
+	int			dx;
+	int			dy;
+	int			sx;
+	int			sy;
+	int			err;
+	int			err2;
+}				t_line;
 typedef struct s_mlx
 {
 	void		*mlx;
@@ -89,6 +104,7 @@ typedef struct s_mlx
 	t_info		info;
 	t_iso		iso;
 	t_fac		fac;
+	t_line		line;
 }				t_mlx;
 void			scale(t_iso *iso, int factor);
 void			rotation_x(t_mlx *map, t_iso *iso);
@@ -96,6 +112,12 @@ void			rotation_y(t_mlx *map, t_iso *iso);
 void			rotation_z(t_mlx *map, t_iso *iso);
 void			translation(t_mlx *map, t_iso *iso);
 void			init_image(t_mlx *mlx);
+t_vector 		new_vector(int x, int y, int z);
+t_line			init_line(t_vector *vect0, t_vector *vect1);
+void			draw_line(t_vector *vect0, t_vector *vect1, t_mlx *map);
+void 			draw_horizontal_line(t_iso *iso, t_mlx *map, int i);
+void 			draw_vertical_line(t_iso *iso, t_mlx *map, int i);
+void			get_coordinates(t_mlx *map, t_iso *iso);
 void			key_rotation(int keycode, t_mlx *map);
 void 			key_translation(int keycode, t_mlx *map);
 int				key_long_press(int keycode, t_mlx *map);
