@@ -27,40 +27,63 @@ void		scale(t_iso *iso, int factor)
 void		rotation_x(t_mlx *map, t_iso *iso)
 {
 	t_matrix m;
+	int			transformedX;
+	int			transformedY;
+	int			transformedZ;
 
 	m = rotation_x_matrix(map);
-	iso->x = (int)(iso->x * m.value[0][0] + iso->y * m.value[0][1] +
+	transformedX = (int)(iso->x * m.value[0][0] + iso->y * m.value[0][1] +
 			iso->z * m.value[0][2] + m.value[0][3]);
-	iso->y = (int)(iso->x * m.value[1][0] + iso->y * m.value[1][1] +
+	transformedY = (int)(iso->x * m.value[1][0] + iso->y * m.value[1][1] +
 			iso->z * m.value[1][2] + m.value[1][3]);
-	iso->z = (int)(iso->x * m.value[2][0] + iso->y * m.value[2][2] +
+	transformedZ = (int)(iso->x * m.value[2][0] + iso->y * m.value[2][1] +
 			iso->z * m.value[2][2] + m.value[2][3]);
+
+	iso->x = transformedX;
+	iso->y = transformedY;
+	iso->z = transformedZ;
+
 }
 
 void		rotation_y(t_mlx *map, t_iso *iso)
 {
 	t_matrix m;
+	int			transformedX;
+	int			transformedY;
+	int			transformedZ;
+
 
 	m = rotation_y_matrix(map);
-	iso->x = (int)(iso->x * m.value[0][0] + iso->y * m.value[0][1] +
+	transformedX = (int)(iso->x * m.value[0][0] + iso->y * m.value[0][1] +
 			iso->z * m.value[0][2] + m.value[0][3]);
-	iso->y = (int)(iso->x * m.value[1][0] + iso->y * m.value[1][1] +
+	transformedY = (int)(iso->x * m.value[1][0] + iso->y * m.value[1][1] +
 			iso->z * m.value[1][2] + m.value[1][3]);
-	iso->z = (int)(iso->x * m.value[2][0] + iso->y * m.value[2][2] +
+	transformedZ = (int)(iso->x * m.value[2][0] + iso->y * m.value[2][1] +
 			iso->z * m.value[2][2] + m.value[2][3]);
+
+	iso->x = transformedX;
+	iso->y = transformedY;
+	iso->z = transformedZ;
 }
 
 void		rotation_z(t_mlx *map, t_iso *iso)
 {
 	t_matrix m;
+	int			transformedX;
+	int			transformedY;
+	int			transformedZ;
 
 	m = rotation_z_matrix(map);
-	iso->x = (int)(iso->x * m.value[0][0] + iso->y * m.value[0][1] +
+	transformedX = (int)(iso->x * m.value[0][0] + iso->y * m.value[0][1] +
 			iso->z * m.value[0][2] + m.value[0][3]);
-	iso->y = (int)(iso->x * m.value[1][0] + iso->y * m.value[1][1] +
+	transformedY = (int)(iso->x * m.value[1][0] + iso->y * m.value[1][1] +
 			iso->z * m.value[1][2] + m.value[1][3]);
-	iso->z = (int)(iso->x * m.value[2][0] + iso->y * m.value[2][2] +
+	transformedZ = (int)(iso->x * m.value[2][0] + iso->y * m.value[2][1] +
 			iso->z * m.value[2][2] + m.value[2][3]);
+
+	iso->x = transformedX;
+	iso->y = transformedY;
+	iso->z = transformedZ;
 }
 
 void		translation(t_mlx *map, t_iso *iso)
@@ -72,6 +95,6 @@ void		translation(t_mlx *map, t_iso *iso)
 			iso->z * m.value[0][2] + m.value[0][3]);
 	iso->y = (int)(iso->x * m.value[1][0] + iso->y * m.value[1][1] +
 			iso->z * m.value[1][2] + m.value[1][3]);
-	iso->z = (int)(iso->x * m.value[2][0] + iso->y * m.value[2][2] +
+	iso->z = (int)(iso->x * m.value[2][0] + iso->y * m.value[2][1] +
 			iso->z * m.value[2][2] + m.value[2][3]);
 }
