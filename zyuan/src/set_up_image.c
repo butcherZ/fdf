@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/29 13:25:52 by zyuan             #+#    #+#             */
-/*   Updated: 2018/06/29 13:26:46 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/06/30 12:07:12 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ void		empty(t_mlx *mlx)
 	}
 }
 
-void	iso_reduction(t_iso *iso, int x, int y)
+void		iso_reduction(t_iso *iso, int x, int y)
 {
-	iso->x -= x/2;
-	iso->y -= y/2;
+	iso->x -= x / 2;
+	iso->y -= y / 2;
 }
 
-void	iso_augmentation(t_iso *iso, int x, int y)
+void		iso_augmentation(t_iso *iso, int x, int y)
 {
-	iso->x -= x/2;
-	iso->y -= y/2;
+	iso->x -= x / 2;
+	iso->y -= y / 2;
 }

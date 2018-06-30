@@ -52,13 +52,19 @@ t_vector	*realloc_and_append_struct(t_vector *vectors, char **tab,
 	return (new_vector);
 }
 
+void		initiate_info(t_info *info)
+{
+	info->total = 0;
+	info->height = 0;
+	info->error = 1;
+}
+
 t_vector	*parse_file(int fd, char **line, t_info *info)
 {
 	char		**tab;
 	t_vector	*vector;
 
-	info->total = 0;
-	info->height = 0;
+	initiate_info(info);
 	if (!(vector = (t_vector *)malloc(sizeof(t_vector) * 1)))
 		return (NULL);
 	while (get_next_line(fd, line) == 1)
@@ -75,6 +81,7 @@ t_vector	*parse_file(int fd, char **line, t_info *info)
 			}
 		}
 		info->height++;
+		info->error = 0;
 		free_tab(tab, info);
 		free(*line);
 	}

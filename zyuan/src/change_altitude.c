@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   change_altitude.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/06/30 12:01:16 by zyuan             #+#    #+#             */
+/*   Updated: 2018/06/30 12:15:35 by zyuan            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mlx.h"
 #include "fdf.h"
 #include "../libft/libft.h"
@@ -28,7 +40,6 @@ void	get_z(t_mlx *map)
 		j++;
 	}
 	map->info.range_z = abs(map->info.max_z - map->info.min_z);
-	//printf("min is %d, max is %d\n range is %d\n", map->info.max_z, map->info.min_z, map->info.range_z);
 }
 
 void	altitude_plus(t_vector *vec, t_mlx *map)
@@ -41,5 +52,4 @@ void	altitude_plus(t_vector *vec, t_mlx *map)
 		vec->z = -1;
 	if (map->fac.altitude == 1 && vec->z == 0)
 		vec->z = 1;
-	printf("altitude is %f\n", vec->z);
 }
