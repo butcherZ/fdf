@@ -78,7 +78,8 @@ void		draw_map(t_mlx *map)
 	t_iso		*iso;
 
 	i = 0;
-	iso = malloc(sizeof(t_iso) * map->info.total);
+	if (!(iso = malloc(sizeof(t_iso) * map->info.total)))
+		exit(1);
 	get_coordinates(map, iso);
 	while (i < map->info.total)
 	{
