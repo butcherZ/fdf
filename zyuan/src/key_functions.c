@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/30 12:07:49 by zyuan             #+#    #+#             */
-/*   Updated: 2018/06/30 12:22:59 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/07/01 15:47:42 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		key_translation(int keycode, t_mlx *map)
 
 int			key_long_press(int keycode, t_mlx *map)
 {
-	print_key_usage(keycode);
+//	print_key_usage(keycode);
 	if (keycode == 18)
 		map->fac.scale++;
 	if (keycode == 19)
@@ -98,7 +98,7 @@ int			key_long_press(int keycode, t_mlx *map)
 
 int			key_down(int keycode, t_mlx *map)
 {
-	print_key_usage(keycode);
+//	print_key_usage(keycode);
 	if (keycode == 53)
 	{
 		mlx_destroy_window(map->mlx, map->win);

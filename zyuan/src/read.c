@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:52:26 by zyuan             #+#    #+#             */
-/*   Updated: 2018/06/29 13:21:29 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/07/01 16:24:18 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,25 @@ void		initiate_info(t_info *info)
 	info->error = 1;
 }
 
+void		check_content_erros(t_info *info)
+{
+	if (info->total >= 250000)
+	{
+		ft_putstr("file is too big");
+		exit(1);
+	}
+}
+
+void		check_format_errors(t_info *info)
+{
+	if (info->total / info->height != info->width)
+	{
+		ft_putstr("not correct format");
+		info->error = 1;
+		exit(1);
+	}
+}
+
 t_vector	*parse_file(int fd, char **line, t_info *info)
 {
 	char		**tab;
@@ -81,9 +100,11 @@ t_vector	*parse_file(int fd, char **line, t_info *info)
 			}
 		}
 		info->height++;
+		check_format_errors(info);
 		info->error = 0;
 		free_tab(tab, info);
 		free(*line);
 	}
+	check_content_erros(info);
 	return (vector);
 }
