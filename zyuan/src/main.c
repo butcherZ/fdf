@@ -100,10 +100,9 @@ int			main(int argc, char *argv[])
 	}
 	if (argc == 2)
 	{
-		map.fd = open(argv[1], O_RDONLY);
-		map.vector = parse_file(map.fd, &(map.read_line), &info);
-		map.info = info;
 		map.argv = argv[1];
+		check_nazi(&map);
+		init_read(&map, &info);
 		if (map.fd < 0 || map.info.error == 1)
 		{
 			ft_putstr("there's nothing to read....\n");

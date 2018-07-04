@@ -45,6 +45,13 @@ void		initiate_info(t_info *info)
 	info->error = 1;
 }
 
+void		init_read(t_mlx *map, t_info *info)
+{
+	map->fd = open(map->argv, O_RDONLY);
+	map->vector = parse_file(map->fd, &(map->read_line), info);
+	map->info = *info;
+}
+
 t_vector	*parse_file(int fd, char **line, t_info *info)
 {
 	char		**tab;

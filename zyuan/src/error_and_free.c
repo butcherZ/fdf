@@ -45,6 +45,20 @@ void		check_content_erros(t_info *info)
 	}
 }
 
+void		check_nazi(t_mlx *map)
+{
+	char *str1;
+	char *str2;
+
+	str1 = "/dev/random";
+	str2 = "/dev/urandom";
+	if (ft_strcmp(map->argv, str1) == 0 || ft_strcmp(map->argv, str2) == 0)
+	{
+		ft_putstr("NAZI ALERT!!!");
+		exit(1);
+	}
+}
+
 void		check_format_errors(t_info *info)
 {
 	if (info->total / info->height != info->width)

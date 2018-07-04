@@ -123,6 +123,7 @@ void			initiate_info(t_info *info);
 t_vector		*realloc_and_append_struct(t_vector *vectors, char **tab,
 		t_info *info);
 t_vector		*parse_file(int fd, char **line, t_info *info);
+void			init_read(t_mlx *map, t_info *info);
 
 /*
 ** check errors and free mallocs error_and_free.c
@@ -132,6 +133,7 @@ void			free_tab(char **tab, t_info *info);
 void			free_everything(char **line, char **tab, t_info *info);
 void			check_content_erros(t_info *info);
 void			check_format_errors(t_info *info);
+void			check_nazi(t_mlx *map);
 
 /*
 ** initialize matrices init_matrices.c
