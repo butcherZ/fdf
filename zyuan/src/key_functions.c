@@ -6,23 +6,15 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/30 12:07:49 by zyuan             #+#    #+#             */
-/*   Updated: 2018/07/01 15:47:42 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/07/04 18:13:19 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 #include "fdf.h"
 #include "../libft/libft.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-void		print_key_usage(int keycode)
-{
-	ft_putstr("you are pressing key ");
-	ft_putnbr(keycode);
-	ft_putchar('\n');
-}
 
 void		key_rotation(int keycode, t_mlx *map)
 {
@@ -74,7 +66,6 @@ void		key_translation(int keycode, t_mlx *map)
 
 int			key_long_press(int keycode, t_mlx *map)
 {
-//	print_key_usage(keycode);
 	if (keycode == 18)
 		map->fac.scale++;
 	if (keycode == 19)
@@ -98,7 +89,6 @@ int			key_long_press(int keycode, t_mlx *map)
 
 int			key_down(int keycode, t_mlx *map)
 {
-//	print_key_usage(keycode);
 	if (keycode == 53)
 	{
 		mlx_destroy_window(map->mlx, map->win);
