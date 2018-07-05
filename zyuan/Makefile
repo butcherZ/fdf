@@ -22,7 +22,8 @@ SRC = main.c \
 	  render_image.c \
 	  init_matrices.c \
 	  change_altitude.c \
-	  error_and_free.c \
+	  free.c \
+	  check_errors.c \
 
 OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 

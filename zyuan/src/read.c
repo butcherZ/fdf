@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:52:26 by zyuan             #+#    #+#             */
-/*   Updated: 2018/07/04 18:13:32 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/07/05 03:25:01 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,15 @@ t_vector	*parse_file(int fd, char **line, t_info *info)
 			info->width = 0;
 			while (tab[info->width])
 			{
+				check_letter(tab[info->width]);
 				vector = realloc_and_append_struct(vector, tab, info);
 				info->width++;
 				info->total++;
 			}
 		}
 		info->height++;
-		check_format_errors(info);
-		free_everything(line, tab, info);
+		check_format_and_free(line, tab, info);
 	}
-	check_content_erros(info);
+	check_content_errors(info);
 	return (vector);
 }

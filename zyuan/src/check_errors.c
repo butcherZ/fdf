@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_and_free.c                                   :+:      :+:    :+:   */
+/*   check_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/04 18:12:14 by zyuan             #+#    #+#             */
-/*   Updated: 2018/07/04 18:12:32 by zyuan            ###   ########.fr       */
+/*   Created: 2018/07/05 03:20:56 by zyuan             #+#    #+#             */
+/*   Updated: 2018/07/05 03:27:52 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-void		free_tab(char **tab, t_info *info)
+void		check_letter(char *tab)
 {
 	int		i;
 
 	i = 0;
-	while (i < info->width + 1)
+	while (tab[i])
 	{
-		free(tab[i]);
+		if (ft_isdigit(tab[i]) == 0)
+		{
+			ft_putstr("there are illegal characters in the map");
+			exit(1);
+		}
 		i++;
 	}
-	free(tab);
 }
 
-void		free_everything(char **line, char **tab, t_info *info)
-{
-	info->error = 0;
-	free_tab(tab, info);
-	free(*line);
-}
-
-void		check_content_erros(t_info *info)
+void		check_content_errors(t_info *info)
 {
 	if (info->total >= 250000)
 	{
@@ -47,12 +43,15 @@ void		check_content_erros(t_info *info)
 
 void		check_nazi(t_mlx *map)
 {
-	char *str1;
-	char *str2;
+	char 	*str1;
+	char 	*str2;
+	char	*str3;
 
 	str1 = "/dev/random";
 	str2 = "/dev/urandom";
-	if (ft_strcmp(map->argv, str1) == 0 || ft_strcmp(map->argv, str2) == 0)
+	str3 = "/dev/zero";
+	if (ft_strcmp(map->argv, str1) == 0 || ft_strcmp(map->argv, str2) == 0
+			|| ft_strcmp(map->argv, str3) == 0)
 	{
 		ft_putstr("NAZI ALERT!!!");
 		exit(1);

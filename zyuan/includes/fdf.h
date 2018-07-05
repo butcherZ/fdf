@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/08 17:50:33 by zyuan             #+#    #+#             */
-/*   Updated: 2018/06/30 15:35:48 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/07/05 03:22:30 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,14 +126,21 @@ t_vector		*parse_file(int fd, char **line, t_info *info);
 void			init_read(t_mlx *map, t_info *info);
 
 /*
-** check errors and free mallocs error_and_free.c
+** check errors check_errors.c
+*/
+
+void			check_letter(char *tab);
+void			check_content_errors(t_info *info);
+void			check_format_errors(t_info *info);
+void			check_nazi(t_mlx *map);
+
+/*
+** free free.c
 */
 
 void			free_tab(char **tab, t_info *info);
 void			free_everything(char **line, char **tab, t_info *info);
-void			check_content_erros(t_info *info);
-void			check_format_errors(t_info *info);
-void			check_nazi(t_mlx *map);
+void			check_format_and_free(char **line, char **tab, t_info *info);
 
 /*
 ** initialize matrices init_matrices.c
