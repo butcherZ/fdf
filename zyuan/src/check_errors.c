@@ -23,11 +23,14 @@ void		check_letter(char *tab)
 	i = 0;
 	while (tab[i])
 	{
+		if ((tab[i] == '+' || tab[i] == '-') && i == 0)
+			i++;
 		if (ft_isdigit(tab[i]) == 0)
 		{
 			ft_putstr("there are illegal characters in the map");
 			exit(1);
 		}
+		printf("%s\n", tab);
 		i++;
 	}
 }
