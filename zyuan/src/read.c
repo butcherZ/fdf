@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 12:52:26 by zyuan             #+#    #+#             */
-/*   Updated: 2018/07/05 03:25:01 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/07/14 19:14:45 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,18 @@ void		init_read(t_mlx *map, t_info *info)
 	map->info = *info;
 }
 
+t_vector	*get_vector(char **tab, t_info *info, t_vector *vector)
+{
+	while (tab[info->width])
+	{
+		check_letter(tab[info->width]);
+		vector = realloc_and_append_struct(vector, tab, info);
+		info->width++;
+		info->total++;
+	}
+	return (vector);
+}
+
 t_vector	*parse_file(int fd, char **line, t_info *info)
 {
 	char		**tab;
@@ -62,20 +74,17 @@ t_vector	*parse_file(int fd, char **line, t_info *info)
 		return (NULL);
 	while (get_next_line(fd, line) == 1)
 	{
-		tab = ft_strsplit(*line, ' ');
-		if (tab)
+		if (ft_strchr(*line, ' '))
 		{
-			info->width = 0;
-			while (tab[info->width])
+			tab = ft_strsplit(*line, ' ');
+			if (tab)
 			{
-				check_letter(tab[info->width]);
-				vector = realloc_and_append_struct(vector, tab, info);
-				info->width++;
-				info->total++;
+				info->width = 0;
+				vector = get_vector(tab, info, vector);
 			}
+			info->height++;
+			check_format_and_free(line, tab, info);
 		}
-		info->height++;
-		check_format_and_free(line, tab, info);
 	}
 	check_content_errors(info);
 	return (vector);

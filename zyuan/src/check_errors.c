@@ -6,7 +6,7 @@
 /*   By: zyuan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 03:20:56 by zyuan             #+#    #+#             */
-/*   Updated: 2018/07/05 03:27:52 by zyuan            ###   ########.fr       */
+/*   Updated: 2018/07/14 17:30:23 by zyuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ void		check_letter(char *tab)
 		if ((tab[i] == '+' || tab[i] == '-') && i == 0)
 			i++;
 		if (ft_isdigit(tab[i]) == 0)
+			tab[i] = 1;
+		if (ft_atoi(&tab[i]) >= 1000)
 		{
-			ft_putstr("there are illegal characters in the map");
+			ft_putstr("Are you high? cause I am...x)");
 			exit(1);
 		}
-		printf("%s\n", tab);
 		i++;
 	}
 }
@@ -46,8 +47,8 @@ void		check_content_errors(t_info *info)
 
 void		check_nazi(t_mlx *map)
 {
-	char 	*str1;
-	char 	*str2;
+	char	*str1;
+	char	*str2;
 	char	*str3;
 
 	str1 = "/dev/random";

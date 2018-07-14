@@ -122,6 +122,7 @@ typedef struct	s_mlx
 void			initiate_info(t_info *info);
 t_vector		*realloc_and_append_struct(t_vector *vectors, char **tab,
 		t_info *info);
+t_vector		*get_vector(char **tab, t_info *info, t_vector *vector);
 t_vector		*parse_file(int fd, char **line, t_info *info);
 void			init_read(t_mlx *map, t_info *info);
 
