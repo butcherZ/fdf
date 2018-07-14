@@ -64,7 +64,7 @@ void		check_nazi(t_mlx *map)
 
 void		check_format_errors(t_info *info)
 {
-	if (info->total / info->height != info->width)
+	if ((float)info->total / (float)info->height != (float)info->width)
 	{
 		ft_putstr("not correct format");
 		info->error = 1;
